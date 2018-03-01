@@ -2,14 +2,14 @@
 namespace Eve\Models\Character;
 
 use Eve\Abstracts\Model;
+use Eve\Traits\GetCorporation;
 
 final class CorporationHistory extends Model
 {
+	use GetCorporation;
+
 	/** @var string $start_date */
 	public $start_date;
-
-	/** @var int $corporation_id */
-	public $corporation_id;
 
 	/** @var bool $is_deleted */
 	public $is_deleted;

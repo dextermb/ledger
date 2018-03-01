@@ -263,7 +263,9 @@ final class Eve
 			false
 		);
 
-		$session       = Session::init();
+		$session = Session::init();
+
+		/** @var \Eve\Models\Character\Character $session ->self */
 		$session->self = (new Character)->getItem($json['CharacterID']);
 
 		return $session->self;

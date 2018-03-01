@@ -4,14 +4,17 @@ namespace Eve\Models\Character;
 use Eve\Abstracts\Model;
 use Eve\Abstracts\Model\Map;
 
+use Eve\Exceptions\ApiException;
+use Eve\Exceptions\JsonException;
+use Eve\Exceptions\ModelException;
+
+use Eve\Collections\Character\Character;
+
 final class Name extends Model
 {
 	/** @var string $name */
 	public $name;
 
-	/**
-	 * @return Map[]
-	 */
 	public function map()
 	{
 		return [
@@ -20,4 +23,12 @@ final class Name extends Model
 		];
 	}
 
+	/**
+	 * @throws ApiException|JsonException|ModelException
+	 * @return Model
+	 */
+	public function character()
+	{
+		return (new Character)->getItem($this->id);
+	}
 }

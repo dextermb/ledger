@@ -13,7 +13,7 @@ use Eve\Exceptions\NotImplementedException;
 final class Name extends Collection
 {
 	protected $base_url = '/characters/names';
-	protected $model    = \Eve\Models\Character\Character::class;
+	protected $model    = \Eve\Models\Character\Name::class;
 
 	/**
 	 * @throws NotImplementedException

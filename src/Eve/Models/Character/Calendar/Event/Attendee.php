@@ -2,11 +2,11 @@
 namespace Eve\Models\Character\Calendar\Event;
 
 use Eve\Abstracts\Model;
+use Eve\Traits\GetCharacter;
 
 final class Attendee extends Model
 {
-	/** @var int $character_id */
-	public $character_id;
+	use GetCharacter;
 
 	/** @var string $event_response */
 	public $event_response;

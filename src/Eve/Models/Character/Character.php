@@ -2,22 +2,20 @@
 namespace Eve\Models\Character;
 
 use Eve\Helpers\Request;
+
 use Eve\Abstracts\Model;
+use Eve\Traits\GetAlliance;
+use Eve\Traits\GetCorporation;
 
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
-use Eve\Models\Character\KillMails\KillMail;
 
 final class Character extends Model
 {
+	use GetCorporation, GetAlliance;
+
 	/** @var string $name */
 	public $name;
-
-	/** @var int $corporation_id */
-	public $corporation_id;
-
-	/** @var int $alliance_id */
-	public $alliance_id;
 
 	/** @var string $birthday */
 	public $birthday;
@@ -62,7 +60,7 @@ final class Character extends Model
 	public function blueprints()
 	{
 		return (new Request)
-			->setModel(Blueprint::class)
+			->setModel(\Eve\Models\Shared\Blueprint::class)
 			->setEndpoint($this->base_uri . '/blueprints')
 			->run();
 	}
@@ -158,7 +156,7 @@ final class Character extends Model
 	public function roles()
 	{
 		return (new Request)
-			->setModel(Roles::class)
+			->setModel(Role::class)
 			->setEndpoint($this->base_uri . '/roles')
 			->run();
 	}
@@ -170,7 +168,7 @@ final class Character extends Model
 	public function standings()
 	{
 		return (new Request)
-			->setModel(Standing::class)
+			->setModel(\Eve\Models\Shared\Standing::class)
 			->setEndpoint($this->base_uri . '/standings')
 			->run();
 	}
@@ -194,7 +192,7 @@ final class Character extends Model
 	public function titles()
 	{
 		return (new Request)
-			->setModel(Title::class)
+			->setModel(\Eve\Models\Shared\Title::class)
 			->setEndpoint($this->base_uri . '/titles')
 			->run();
 	}
@@ -206,7 +204,7 @@ final class Character extends Model
 	public function assets()
 	{
 		return (new Request)
-			->setModel(Asset::class)
+			->setModel(\Eve\Models\Shared\Asset::class)
 			->setEndpoint($this->base_uri . '/assets')
 			->run();
 	}
@@ -218,7 +216,7 @@ final class Character extends Model
 	public function bookmarks()
 	{
 		return (new Request)
-			->setModel(Bookmark::class)
+			->setModel(\Eve\Models\Shared\Bookmark::class)
 			->setEndpoint($this->base_uri . '/bookmarks')
 			->run();
 	}
@@ -230,7 +228,7 @@ final class Character extends Model
 	public function bookmarkFolders()
 	{
 		return (new Request)
-			->setModel(Bookmarks\Folder::class)
+			->setModel(\Eve\Models\Shared\Bookmarks\Folder::class)
 			->setEndpoint($this->base_uri . '/bookmarks/folders')
 			->run();
 	}
@@ -307,7 +305,7 @@ final class Character extends Model
 	public function contacts()
 	{
 		return (new Request)
-			->setModel(Contact::class)
+			->setModel(\Eve\Models\Shared\Contact::class)
 			->setEndpoint($this->base_uri . '/contacts')
 			->run();
 	}
@@ -331,7 +329,7 @@ final class Character extends Model
 	public function contracts()
 	{
 		return (new Request)
-			->setModel(Contract::class)
+			->setModel(\Eve\Models\Shared\Contract::class)
 			->setEndpoint($this->base_uri . '/contracts')
 			->run();
 	}
@@ -346,7 +344,7 @@ final class Character extends Model
 	public function contractBids(int $id)
 	{
 		return (new Request)
-			->setModel(Contracts\Bid::class)
+			->setModel(\Eve\Models\Shared\Contracts\Bid::class)
 			->setEndpoint($this->base_uri . '/contracts/' . $id . '/bids')
 			->run();
 	}
@@ -361,7 +359,7 @@ final class Character extends Model
 	public function contractItems(int $id)
 	{
 		return (new Request)
-			->setModel(Contracts\Item::class)
+			->setModel(\Eve\Models\Shared\Contracts\Item::class)
 			->setEndpoint($this->base_uri . '/contracts/' . $id . '/items')
 			->run();
 	}
@@ -433,7 +431,7 @@ final class Character extends Model
 	public function killMailRecent()
 	{
 		return (new Request)
-			->setmodel(KillMail::class)
+			->setmodel(\Eve\Models\Shared\KillMails\KillMail::class)
 			->setEndpoint($this->base_uri . '/killmails/recent')
 			->run();
 	}
@@ -512,7 +510,7 @@ final class Character extends Model
 	public function message(int $id)
 	{
 		return (new Request)
-			->setModel(Mail::class)
+			->setModel(Mail\Mail::class)
 			->setEndpoint($this->base_uri . '/mail/' . $id)
 			->run();
 	}
@@ -645,6 +643,8 @@ final class Character extends Model
 	}
 
 	/**
+	 * TODO: Account for error response (JSON)
+	 *
 	 * @throws ApiException|JsonException
 	 * @return array|Model|Model[]
 	 */
@@ -663,7 +663,7 @@ final class Character extends Model
 	public function walletJournal()
 	{
 		return (new Request)
-			->setModel(Wallet\Journal::class)
+			->setModel(\Eve\Models\Shared\Wallet\Journal::class)
 			->setEndpoint($this->base_uri . '/wallet/journal')
 			->run();
 	}

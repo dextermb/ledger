@@ -1,18 +1,12 @@
 <?php
 namespace Eve\Models\Character;
 
-use Eve\Abstracts\Model;
+use Eve\Models\Shared;
+use Eve\Traits\GetCorporation;
 
-final class Medal extends Model
+final class Medal extends Shared\Medal
 {
-	/** @var string $title */
-	public $title;
-
-	/** @var string $description */
-	public $description;
-
-	/** @var int $corporation_id */
-	public $corporation_id;
+	use GetCorporation;
 
 	/** @var int $issuer_id */
 	public $issuer_id;
@@ -28,11 +22,4 @@ final class Medal extends Model
 
 	/** @var array $graphics */
 	public $graphics;
-
-	public function map()
-	{
-		return [
-			'medal_id' => Model\Map::set('id'),
-		];
-	}
 }

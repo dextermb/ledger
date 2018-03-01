@@ -39,11 +39,11 @@ final class Name extends Collection
 
 	/**
 	 * @param int $id
-	 * @throws NotImplementedException
-	 * @return void
+	 * @throws ApiException|JsonException
+	 * @return Model
 	 */
 	public function getItem(int $id)
 	{
-		throw new NotImplementedException;
+		return $this->getItems([ $id ])[0];
 	}
 }

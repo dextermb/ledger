@@ -31,10 +31,12 @@ class Collection implements \Eve\Interfaces\Collection
 	 * Get item details for given IDs
 	 *
 	 * @param int[] $ids
+	 * @param int   $offset
+	 * @param int   $limit
 	 * @throws ApiException|JsonException|ModelException
 	 * @return Model[]
 	 */
-	public function getItems(array $ids = [])
+	public function getItems(array $ids = [], int $offset = 0, int $limit = 50)
 	{
 		$this->validate();
 
@@ -44,11 +46,19 @@ class Collection implements \Eve\Interfaces\Collection
 
 		$output = [];
 
-		foreach ($ids as $id) {
+		foreach ($ids as $key => $id) {
+			if ($key < $offset) {
+				continue;
+			}
+
 			$output[] = (new Request)
 				->setModel($this->model)
 				->setEndpoint($this->base_url . "/{$id}")
 				->run();
+
+			if ($key === $limit) {
+				break;
+			}
 		}
 
 		return $output;

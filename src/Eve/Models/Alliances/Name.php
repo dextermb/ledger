@@ -15,9 +15,6 @@ final class Name extends Model
 	/** @var string $name */
 	public $name;
 
-	/**
-	 * @return Map[]
-	 */
 	public function map()
 	{
 		return [

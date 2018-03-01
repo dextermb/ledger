@@ -14,6 +14,8 @@ final class Request
 	const BASE_OPTIONS    = '?datasorce=tranquility&language=en-us';
 	const MODEL_NAMESPACE = 'Eve\Models\\';
 
+	const MAX_RETRIES = 3;
+
 	const DEFAULT_HEADERS
 		= [
 			'accept' => 'Accept: application/json',
@@ -99,7 +101,9 @@ final class Request
 	 */
 	public function setEndpoint(string $endpoint)
 	{
-		$this->endpoint = $endpoint;
+		$this->endpoint = !endsWith($endpoint, '/')
+			? $endpoint . '/'
+			: $endpoint;
 
 		return $this;
 	}
@@ -218,7 +222,18 @@ final class Request
 
 		$this->raw_response = curl_exec($ch);
 
-		if ($this->expect_json) {
+		$retries     = 0;
+		$status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+		while ($status_code === 502) {
+			if ($retries++ === self::MAX_RETRIES) {
+				throw new ApiException('MAX_RETRIES');
+			}
+
+			$this->raw_response = curl_exec($ch);
+		}
+
+		if ($status_code >= 400 || $this->expect_json) {
 			$this->response = json_decode($this->raw_response, true);
 
 			if (!is_array($this->response)) {
@@ -283,12 +298,12 @@ final class Request
 			if (is_numeric($this->id)) {
 				$data['id'] = $this->id;
 			} else {
-				if (!!preg_match('/\/([0-9]+)$/', $this->endpoint, $matches)) {
+				if (!!preg_match('/\/([0-9]+)(?:\/)?$/', $this->endpoint, $matches)) {
 					$data['id'] = $matches[1];
 				}
 			}
 
-			$data['base_uri'] = $this->endpoint;
+			$data['base_uri'] = preg_replace('/\/$/', '', $this->endpoint);
 		}
 
 		/** @var Model $model */
@@ -309,6 +324,8 @@ final class Request
 				$this->convert($data[ $original ], $new->key);
 			}
 		}
+
+		$model->setAttributes($data);
 
 		$attributes = array_keys(get_object_vars($model));
 
