@@ -1,0 +1,23 @@
+{
+  "name": "dextermb/ledger",
+  "description": "A mining ledger for LIOX Corporation",
+  "type": "project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Dexter Marks-Barber",
+      "email": "dexter@marks-barber.co.uk"
+    }
+  ],
+  "autoload": {
+    "files": [
+      "src/Eve/Helpers/Functions.inc.php"
+    ],
+    "psr-4": {
+      "Eve\\": "src/Eve"
+    }
+  },
+  "require": {
+    "vlucas/phpdotenv": "^2.4"
+  }
+}

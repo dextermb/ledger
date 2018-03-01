@@ -1,0 +1,12 @@
+conf/
+
+.env
+.idea/
+vendor/
+composer.lock
+
+docker-compose.yml
+*.php
+
+!bootstrap.php
+!src/**/*.php
