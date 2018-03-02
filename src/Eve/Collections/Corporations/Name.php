@@ -12,7 +12,7 @@ use Eve\Exceptions\NotImplementedException;
 
 final class Name extends Collection
 {
-	protected $base_url = '/corporations/names';
+	protected $base_uri = '/corporations/names';
 	protected $model    = \Eve\Models\Corporations\Name::class;
 
 	/**
@@ -33,7 +33,7 @@ final class Name extends Collection
 	{
 		return (new Request)
 			->setModel($this->model)
-			->setEndpoint($this->base_url . '?corporation_ids=' . implode(',', $ids))
+			->setEndpoint($this->base_uri . '?corporation_ids=' . implode(',', $ids))
 			->run();
 	}
 
@@ -42,7 +42,7 @@ final class Name extends Collection
 	 * @throws NotImplementedException
 	 * @return void
 	 */
-	public function getItem(int $id)
+	public function getItem(int $id = null)
 	{
 		throw new NotImplementedException;
 	}

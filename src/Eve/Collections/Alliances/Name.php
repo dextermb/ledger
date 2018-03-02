@@ -12,7 +12,7 @@ use Eve\Exceptions\NotImplementedException;
 
 final class Name extends Collection
 {
-	protected $base_url = '/character/names';
+	protected $base_uri = '/character/names';
 	protected $model    = \Eve\Models\Alliances\Name::class;
 
 	/**
@@ -33,7 +33,7 @@ final class Name extends Collection
 	{
 		return (new Request)
 			->setModel($this->model)
-			->setEndpoint($this->base_url . '?alliance_ids=' . implode(',', $ids))
+			->setEndpoint($this->base_uri . '?alliance_ids=' . implode(',', $ids))
 			->run();
 	}
 

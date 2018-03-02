@@ -1,19 +1,18 @@
 <?php
-namespace Eve\Collections\Character;
+namespace Eve\Collections\Search;
 
 use Eve\Helpers\Request;
 
-use Eve\Abstracts\Collection;
 use Eve\Abstracts\Model;
 
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
 use Eve\Exceptions\NotImplementedException;
 
-final class Name extends Collection
+final class Search
 {
-	protected $base_uri = '/characters/names';
-	protected $model    = \Eve\Models\Character\Name::class;
+	protected $base_uri = '/search';
+	protected $model    = \Eve\Models\Search\Search::class;
 
 	/**
 	 * @throws NotImplementedException
@@ -25,15 +24,16 @@ final class Name extends Collection
 	}
 
 	/**
-	 * @param int[] $ids
+	 * @param       $search
+	 * @param array $categories
 	 * @throws ApiException|JsonException
-	 * @return Model[]
+	 * @return Model
 	 */
-	public function getItems(array $ids = [])
+	public function getItems(string $search, array $categories)
 	{
 		return (new Request)
 			->setModel($this->model)
-			->setEndpoint($this->base_uri . '?character_ids=' . implode(',', $ids))
+			->setEndpoint($this->base_uri . '?search=' . $search . '&categories=' . implode(',', $categories))
 			->run();
 	}
 

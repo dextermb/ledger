@@ -8,7 +8,7 @@ use Eve\Models\Character\Character as Model;
 
 final class Character extends Collection
 {
-	protected $base_url = '/characters';
+	protected $base_uri = '/characters';
 	protected $model    = \Eve\Models\Character\Character::class;
 
 	/**

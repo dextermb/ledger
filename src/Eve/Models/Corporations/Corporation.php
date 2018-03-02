@@ -125,7 +125,7 @@ final class Corporation extends Model
 	public function facilities()
 	{
 		return (new Request)
-			->setModel(Facility::class)
+			->setModel(\Eve\Models\Shared\Industry\Facility::class)
 			->setEndpoint($this->base_uri . '/facilities')
 			->run();
 	}
@@ -577,6 +577,18 @@ final class Corporation extends Model
 		return (new Request)
 			->setModel(\Eve\Models\Shared\Wallet\Transaction::class)
 			->setEndpoint($this->base_uri . '/wallets/' . $id . '/transactions')
+			->run();
+	}
+
+	/**
+	 * @throws ApiException|JsonException
+	 * @return array|Model|Model[]
+	 */
+	public function offers()
+	{
+		return (new Request)
+			->setModel(\Eve\Models\Loyalty\Stores\Corporation\Offer::class)
+			->setEndpoint('/loyalty/stores/' . $this->id . '/offers')
 			->run();
 	}
 }

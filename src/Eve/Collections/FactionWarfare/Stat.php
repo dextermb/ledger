@@ -1,5 +1,5 @@
 <?php
-namespace Eve\Collections\Character;
+namespace Eve\Collections\FactionWarfare;
 
 use Eve\Helpers\Request;
 
@@ -10,10 +10,10 @@ use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
 use Eve\Exceptions\NotImplementedException;
 
-final class Name extends Collection
+final class Stat extends Collection
 {
-	protected $base_uri = '/characters/names';
-	protected $model    = \Eve\Models\Character\Name::class;
+	protected $base_uri = '/fw/stats';
+	protected $model    = \Eve\Models\FactionWarfare\Stat::class;
 
 	/**
 	 * @throws NotImplementedException
@@ -25,15 +25,17 @@ final class Name extends Collection
 	}
 
 	/**
-	 * @param int[] $ids
+	 * @param array $ids
+	 * @param int   $offset
+	 * @param int   $limit
 	 * @throws ApiException|JsonException
 	 * @return Model[]
 	 */
-	public function getItems(array $ids = [])
+	public function getItems(array $ids = [], int $offset = 0, int $limit = 50)
 	{
 		return (new Request)
 			->setModel($this->model)
-			->setEndpoint($this->base_uri . '?character_ids=' . implode(',', $ids))
+			->setEndpoint($this->base_uri)
 			->run();
 	}
 

@@ -1,9 +1,9 @@
 <?php
-namespace Eve\Models\Corporations;
+namespace Eve\Models\Shared\Industry;
 
 use Eve\Abstracts\Model;
 
-final class Facility extends Model
+class Facility extends Model
 {
 	/** @var int $type_id */
 	public $type_id;
@@ -15,6 +15,7 @@ final class Facility extends Model
 	{
 		return [
 			'facility_id' => Model\Map::set('id'),
+			'solar_system_id' => Model\Map::set('system_id')
 		];
 	}
 }

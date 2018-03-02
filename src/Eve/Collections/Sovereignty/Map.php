@@ -1,21 +1,19 @@
 <?php
-namespace Eve\Collections\Corporations;
+namespace Eve\Collections\Sovereignty;
 
 use Eve\Abstracts\Collection;
 use Eve\Exceptions\NotImplementedException;
 
-final class NpcCorps extends Collection
+final class Map extends Collection
 {
-	protected $base_uri = '/corporations/npccorps';
+	protected $base_uri = '/sovereignty/maps';
+	protected $model    = \Eve\Models\Sovereignty\Map::class;
 
 	/**
-	 * @param array $ids
-	 * @param int   $offset
-	 * @param int   $limit
 	 * @throws NotImplementedException
 	 * @return void
 	 */
-	public function getItems(array $ids = [], int $offset = 0, int $limit = 50)
+	public function getIds()
 	{
 		throw new NotImplementedException;
 	}

@@ -7,7 +7,7 @@ use Eve\Exceptions\NotImplementedException;
 
 final class Corporation extends Collection
 {
-	protected $base_url = '/corporations';
+	protected $base_uri = '/corporations';
 	protected $model    = \Eve\Models\Corporations\Corporation::class;
 
 	/**

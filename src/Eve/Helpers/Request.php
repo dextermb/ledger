@@ -10,7 +10,7 @@ use Eve\Exceptions\JsonException;
 
 final class Request
 {
-	const BASE_URL        = 'https://esi.tech.ccp.is/latest';
+	const base_uri        = 'https://esi.tech.ccp.is/latest';
 	const BASE_OPTIONS    = '?datasorce=tranquility&language=en-us';
 	const MODEL_NAMESPACE = 'Eve\Models\\';
 
@@ -204,7 +204,7 @@ final class Request
 
 		$curl_opts = $this->curl_opts + self::DEFAULT_CURLOPTS;
 
-		$url = self::BASE_URL . $this->endpoint;
+		$url = self::base_uri . $this->endpoint;
 		$url .= strpos($this->endpoint, '?') !== false
 			? str_replace('?', '&', self::BASE_OPTIONS)
 			: self::BASE_OPTIONS;
@@ -262,7 +262,7 @@ final class Request
 	 * @param string $class
 	 * @return Model|Model[]|array
 	 */
-	private function convert(array &$data = null, string $class = null)
+	private function convert(&$data = null, string $class = null)
 	{
 		if (is_null($data)) {
 			$data = &$this->response;

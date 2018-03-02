@@ -9,7 +9,7 @@ use Eve\Exceptions\ModelException;
 
 class Collection implements \Eve\Interfaces\Collection
 {
-	protected $base_url;
+	protected $base_uri;
 	protected $model;
 
 	/**
@@ -23,7 +23,7 @@ class Collection implements \Eve\Interfaces\Collection
 		$this->validate(false);
 
 		return (new Request)
-			->setEndpoint($this->base_url)
+			->setEndpoint($this->base_uri)
 			->run();
 	}
 
@@ -53,7 +53,7 @@ class Collection implements \Eve\Interfaces\Collection
 
 			$output[] = (new Request)
 				->setModel($this->model)
-				->setEndpoint($this->base_url . "/{$id}")
+				->setEndpoint($this->base_uri . "/{$id}")
 				->run();
 
 			if ($key === $limit) {
@@ -82,7 +82,7 @@ class Collection implements \Eve\Interfaces\Collection
 	 */
 	final protected function validate(bool $validate_model = true)
 	{
-		if (!is_string($this->base_url)) {
+		if (!is_string($this->base_uri)) {
 			throw new ModelException;
 		}
 
