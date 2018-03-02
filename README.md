@@ -7,8 +7,9 @@ A mining ledger for LIOX Corporation
 - [ ] `POST`, `PUT`, `DELETE` requests for characters
 - [ ] `POST`, `PUT`, `DELETE` requests for corporations
 - [ ] `POST`, `PUT`, `DELETE` requests for fleets
-- [ ] `GET` requests for universes
+- [ ] `POST` requests for universe
 
+- [ ] Model relationships (eg: `war.allies[.corporation[.ceo]]`)
 - [ ] Inline models (eg: `war.allies`)
 
 ### Completed
@@ -31,6 +32,7 @@ A mining ledger for LIOX Corporation
 - [x] `GET` requests for search
 - [x] `GET` requests for sovereignty
 - [x] `GET` requests for status
+- [x] `GET` requests for universes
 - [x] `GET` requests for wars
 
 Much more to come!
