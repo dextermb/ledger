@@ -2,11 +2,11 @@
 namespace Eve\Models\Fleets;
 
 use Eve\Abstracts\Model;
+use Eve\Traits\GetCharacter;
 
 final class Member extends Model
 {
-	/** @var int $character_id */
-	public $character_id;
+	use GetCharacter;
 
 	/** @var int $ship_type_id */
 	public $ship_type_id;

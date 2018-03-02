@@ -3,8 +3,24 @@ namespace Eve\Models\Shared;
 
 use Eve\Abstracts\Model;
 
+use Eve\Collections\Alliances\Alliance;
+use Eve\Collections\Corporations\Corporation;
+use Eve\Exceptions\ApiException;
+use Eve\Exceptions\JsonException;
+use Eve\Exceptions\ModelException;
+
+use Eve\Collections\Character\Character;
+
 final class Contact extends Model
 {
+	const TYPES
+		= [
+			'ALLIANCE' => 'alliance',
+			'CHARACTER' => 'character',
+			'CORPORATION' => 'corporation',
+			'FACTION' => 'faction',
+		];
+
 	/** @var int $standing */
 	public $standing;
 
@@ -25,5 +41,44 @@ final class Contact extends Model
 		return [
 			'contact_id' => Model\Map::set('id'),
 		];
+	}
+
+	/**
+	 * @throws ApiException|JsonException|ModelException
+	 * @return Model|null
+	 */
+	public function alliance()
+	{
+		if ($this->contact_type !== self::TYPES['ALLIANCE']) {
+			return null;
+		}
+
+		return (new Alliance)->getItem($this->id);
+	}
+
+	/**
+	 * @throws ApiException|JsonException|ModelException
+	 * @return Model|null
+	 */
+	public function character()
+	{
+		if ($this->contact_type !== self::TYPES['CHARACTER']) {
+			return null;
+		}
+
+		return (new Character)->getItem($this->id);
+	}
+
+	/**
+	 * @throws ApiException|JsonException|ModelException
+	 * @return Model|null
+	 */
+	public function corporation()
+	{
+		if ($this->contact_type !== self::TYPES['CORPORATION']) {
+			return null;
+		}
+
+		return (new Corporation)->getItem($this->id);
 	}
 }

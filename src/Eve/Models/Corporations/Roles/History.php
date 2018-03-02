@@ -2,11 +2,11 @@
 namespace Eve\Models\Corporations\Roles;
 
 use Eve\Abstracts\Model;
+use Eve\Traits\GetCharacter;
 
 final class History extends Model
 {
-	/** @var int $character_id */
-	public $character_id;
+	use GetCharacter;
 
 	/** @var string $changed_at */
 	public $changed_at;

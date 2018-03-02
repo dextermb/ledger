@@ -2,14 +2,14 @@
 namespace Eve\Models\Corporations;
 
 use Eve\Abstracts\Model;
+use Eve\Traits\GetAlliance;
 
 final class AllianceHistory extends Model
 {
+	use GetAlliance;
+
 	/** @var string $start_date */
 	public $start_date;
-
-	/** @var int $alliance_id */
-	public $alliance_id;
 
 	/** @var bool $is_deleted */
 	public $is_deleted;

@@ -2,11 +2,11 @@
 namespace Eve\Models\Corporations;
 
 use Eve\Models\Shared;
+use Eve\Traits\GetCharacter;
 
 class Role extends Shared\Role
 {
-	/** @var int $character_id */
-	public $character_id;
+	use GetCharacter;
 
 	/** @var array $grantable_roles */
 	public $grantable_roles;

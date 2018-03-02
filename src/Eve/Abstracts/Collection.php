@@ -11,6 +11,7 @@ class Collection implements \Eve\Interfaces\Collection
 {
 	protected $base_uri;
 	protected $model;
+	protected $mass_transform = true;
 
 	/**
 	 * Get item IDs
@@ -38,7 +39,8 @@ class Collection implements \Eve\Interfaces\Collection
 	 */
 	public function getItems(array $ids = [], int $offset = 0, int $limit = 50)
 	{
-		$this->validate();
+		$transform = count($ids) > 1 ? $this->mass_transform : true;
+		$this->validate($transform);
 
 		if (empty($ids)) {
 			$ids = $this->getIds();
@@ -51,10 +53,13 @@ class Collection implements \Eve\Interfaces\Collection
 				continue;
 			}
 
-			$output[] = (new Request)
-				->setModel($this->model)
-				->setEndpoint($this->base_uri . "/{$id}")
-				->run();
+			$request = (new Request)->setEndpoint($this->base_uri . "/{$id}");
+
+			if ($transform) {
+				$request->setModel($this->model);
+			}
+
+			$output[] = $request->run();
 
 			if ($key === $limit) {
 				break;
