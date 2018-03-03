@@ -72,6 +72,26 @@ final class Corporation extends Model
 
 	/**
 	 * @throws ApiException|JsonException
+	 * @return Model|null
+	 */
+	public function faction()
+	{
+		return (new \Eve\Collections\Universe\Faction)
+			->getItems()->where('id', $this->faction_id)[0];
+	}
+
+	/**
+	 * @throws ApiException|JsonException
+	 * @return Model
+	 */
+	public function homeStation()
+	{
+		return (new \Eve\Collections\Universe\Station)
+			->getItem($this->home_station_id);
+	}
+
+	/**
+	 * @throws ApiException|JsonException
 	 * @return array|Model|Model[]
 	 */
 	public function allianceHistory()
@@ -167,14 +187,21 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @param bool $transform
+	 * @throws ApiException|JsonException|ModelException
 	 * @return array
 	 */
-	public function members()
+	public function members(bool $transform = true)
 	{
-		return (new Request)
+		$members = (new Request)
 			->setEndpoint($this->base_uri . '/members')
 			->run();
+
+		if (!$transform) {
+			return $members;
+		}
+
+		return (new Character)->getItems($members, 0, 0);
 	}
 
 	/**

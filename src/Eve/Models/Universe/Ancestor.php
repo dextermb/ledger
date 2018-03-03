@@ -3,6 +3,10 @@ namespace Eve\Models\Universe;
 
 use Eve\Abstracts\Model;
 
+use Eve\Exceptions\ApiException;
+use Eve\Exceptions\JsonException;
+use Eve\Exceptions\ModelException;
+
 final class Ancestor extends Model
 {
 	/** @var string $name */
@@ -19,4 +23,24 @@ final class Ancestor extends Model
 
 	/** @var int $icon_id */
 	public $icon_id;
+
+	/**
+	 * @throws ApiException|JsonException
+	 * @return Model|null
+	 */
+	public function bloodline()
+	{
+		return (new \Eve\Collections\Universe\Bloodline)
+			->getItems()->where('id', $this->bloodline_id)[0];
+	}
+
+	/**
+	 * @throws ApiException|JsonException|ModelException
+	 * @return Model
+	 */
+	public function icon()
+	{
+		return (new \Eve\Collections\Universe\Graphic)
+			->getItem($this->icon_id);
+	}
 }

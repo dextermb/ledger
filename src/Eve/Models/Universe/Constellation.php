@@ -3,6 +3,10 @@ namespace Eve\Models\Universe;
 
 use Eve\Abstracts\Model;
 
+use Eve\Exceptions\ApiException;
+use Eve\Exceptions\JsonException;
+use Eve\Exceptions\ModelException;
+
 final class Constellation extends Model
 {
 	/** @var string $name */
@@ -22,5 +26,14 @@ final class Constellation extends Model
 		return [
 			'constellation_id' => Model\Map::set('id'),
 		];
+	}
+
+	/**
+	 * @throws ApiException|JsonException|ModelException
+	 * @return Model
+	 */
+	public function region() {
+		return (new \Eve\Collections\Universe\Region)
+			->getItem($this->region_id);
 	}
 }

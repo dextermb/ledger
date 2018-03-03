@@ -3,6 +3,10 @@ namespace Eve\Models\Shared;
 
 use Eve\Abstracts\Model;
 
+use Eve\Exceptions\ApiException;
+use Eve\Exceptions\JsonException;
+use Eve\Exceptions\ModelException;
+
 class Mail extends Model
 {
 	/** @var string $subject */
@@ -25,5 +29,15 @@ class Mail extends Model
 		return [
 			'mail_id' => Model\Map::set('id'),
 		];
+	}
+
+	/**
+	 * @throws ApiException|JsonException|ModelException
+	 * @return Model
+	 */
+	public function from()
+	{
+		return (new \Eve\Collections\Character\Character)
+			->getItem($this->from);
 	}
 }

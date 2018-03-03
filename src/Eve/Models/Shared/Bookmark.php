@@ -3,6 +3,10 @@ namespace Eve\Models\Shared;
 
 use Eve\Abstracts\Model;
 
+use Eve\Exceptions\ApiException;
+use Eve\Exceptions\JsonException;
+use Eve\Exceptions\ModelException;
+
 final class Bookmark extends Model
 {
 	/** @var int $id */
@@ -34,5 +38,14 @@ final class Bookmark extends Model
 		return [
 			'bookmark_id' => Model\Map::set('id')
 		];
+	}
+
+	/**
+	 * @throws ApiException|JsonException|ModelException
+	 * @return Model
+	 */
+	public function creator() {
+		return (new \Eve\Collections\Character\Character)
+			->getItem($this->creator_id);
 	}
 }

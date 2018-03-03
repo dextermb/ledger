@@ -3,6 +3,10 @@ namespace Eve\Models\Universe;
 
 use Eve\Abstracts\Model;
 
+use Eve\Exceptions\ApiException;
+use Eve\Exceptions\JsonException;
+use Eve\Exceptions\ModelException;
+
 final class Station extends Model
 {
 	/** @var string $name */
@@ -43,5 +47,35 @@ final class Station extends Model
 		return [
 			'station_id' => Model\Map::set('id'),
 		];
+	}
+
+	/**
+	 * @throws ApiException|JsonException|ModelException
+	 * @return Model
+	 */
+	public function type()
+	{
+		return (new \Eve\Collections\Universe\Type)
+			->getItem($this->type_id);
+	}
+
+	/**
+	 * @throws ApiException|JsonException
+	 * @return Model|null
+	 */
+	public function rate()
+	{
+		return (new \Eve\Collections\Universe\Race)
+			->getItems()->where('id', $this->race_id)[0];
+	}
+
+	/**
+	 * @throws ApiException|JsonException|ModelException
+	 * @return Model
+	 */
+	public function system()
+	{
+		return (new \Eve\Collections\Universe\System)
+			->getItem($this->system_id);
 	}
 }

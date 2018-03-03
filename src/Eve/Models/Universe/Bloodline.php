@@ -4,6 +4,9 @@ namespace Eve\Models\Universe;
 use Eve\Abstracts\Model;
 use Eve\Traits\GetCorporation;
 
+use Eve\Exceptions\ApiException;
+use Eve\Exceptions\JsonException;
+
 final class Bloodline extends Model
 {
 	use GetCorporation;
@@ -37,5 +40,15 @@ final class Bloodline extends Model
 		return [
 			'bloodline_id' => Model\Map::set('id'),
 		];
+	}
+
+	/**
+	 * @throws ApiException|JsonException
+	 * @return Model|null
+	 */
+	public function race()
+	{
+		return (new \Eve\Collections\Universe\Race)
+			->getItems()->where('id', $this->race_id)[0];
 	}
 }

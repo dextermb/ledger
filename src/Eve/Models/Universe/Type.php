@@ -3,6 +3,10 @@ namespace Eve\Models\Universe;
 
 use Eve\Abstracts\Model;
 
+use Eve\Exceptions\ApiException;
+use Eve\Exceptions\JsonException;
+use Eve\Exceptions\ModelException;
+
 final class Type extends Model
 {
 	/** @var string $name */
@@ -55,5 +59,45 @@ final class Type extends Model
 		return [
 			'type_id' => Model\Map::set('id'),
 		];
+	}
+
+	/**
+	 * @throws ApiException|JsonException|ModelException
+	 * @return Model
+	 */
+	public function group()
+	{
+		return (new \Eve\Collections\Universe\Group)
+			->getItem($this->group_id);
+	}
+
+	/**
+	 * @throws ApiException|JsonException|ModelException
+	 * @return Model
+	 */
+	public function marketGroup()
+	{
+		return (new \Eve\Collections\Markets\Group)
+			->getItem($this->market_group_id);
+	}
+
+	/**
+	 * @throws ApiException|JsonException|ModelException
+	 * @return Model
+	 */
+	public function icon()
+	{
+		return (new \Eve\Collections\Universe\Graphic)
+			->getItem($this->icon_id);
+	}
+
+	/**
+	 * @throws ApiException|JsonException|ModelException
+	 * @return Model
+	 */
+	public function graphic()
+	{
+		return (new \Eve\Collections\Universe\Graphic)
+			->getItem($this->graphic_id);
 	}
 }

@@ -3,13 +3,17 @@ namespace Eve\Models\Sovereignty;
 
 use Eve\Abstracts\Model;
 
+use Eve\Exceptions\ApiException;
+use Eve\Exceptions\JsonException;
+use Eve\Exceptions\ModelException;
+
 final class Campaign extends Model
 {
 	/** @var int $structure_id */
 	public $structure_id;
 
-	/** @var int $solar_system_id */
-	public $solar_system_id;
+	/** @var int $system_id */
+	public $system_id;
 
 	/** @var int $constellation_id */
 	public $constellation_id;
@@ -35,7 +39,52 @@ final class Campaign extends Model
 	public function map()
 	{
 		return [
-			'campaign_id' => Model\Map::set('id'),
+			'campaign_id'     => Model\Map::set('id'),
+			'solar_system_id' => Model\Map::set('system_id'),
 		];
+	}
+
+	/**
+	 * @throws ApiException|JsonException|ModelException
+	 * @return Model
+	 */
+	public function structure()
+	{
+		return (new \Eve\Collections\Universe\Structure)
+			->getItem($this->structure_id);
+	}
+
+	/**
+	 * @throws ApiException|JsonException|ModelException
+	 * @return Model
+	 */
+	public function system()
+	{
+		return (new \Eve\Collections\Universe\System)
+			->getItem($this->system_id);
+	}
+
+	/**
+	 * @throws ApiException|JsonException|ModelException
+	 * @return Model
+	 */
+	public function constellation()
+	{
+		return (new \Eve\Collections\Universe\Constellation)
+			->getItem($this->constellation_id);
+	}
+
+	/**
+	 * @throws ApiException|JsonException|ModelException
+	 * @return Model|null
+	 */
+	public function defender()
+	{
+		if (is_null($this->defender_id)) {
+			return null;
+		}
+
+		return (new \Eve\Collections\Alliances\Alliance)
+			->getItem($this->defender_id);
 	}
 }

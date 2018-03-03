@@ -3,6 +3,10 @@ namespace Eve\Models\Universe;
 
 use Eve\Abstracts\Model;
 
+use Eve\Exceptions\ApiException;
+use Eve\Exceptions\JsonException;
+use Eve\Exceptions\ModelException;
+
 final class Moon extends Model
 {
 	/** @var string $name */
@@ -19,5 +23,15 @@ final class Moon extends Model
 		return [
 			'moon_id' => Model\Map::set('id'),
 		];
+	}
+
+	/**
+	 * @throws ApiException|JsonException|ModelException
+	 * @return Model
+	 */
+	public function system()
+	{
+		return (new \Eve\Collections\Universe\System)
+			->getItem($this->system_id);
 	}
 }

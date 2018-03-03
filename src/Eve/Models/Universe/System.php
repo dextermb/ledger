@@ -3,6 +3,10 @@ namespace Eve\Models\Universe;
 
 use Eve\Abstracts\Model;
 
+use Eve\Exceptions\ApiException;
+use Eve\Exceptions\JsonException;
+use Eve\Exceptions\ModelException;
+
 final class System extends Model
 {
 	/** @var int $star_id */
@@ -34,5 +38,25 @@ final class System extends Model
 		return [
 			'system_id' => Model\Map::set('id'),
 		];
+	}
+
+	/**
+	 * @throws ApiException|JsonException
+	 * @return Model
+	 */
+	public function star()
+	{
+		return (new \Eve\Collections\Universe\Star)
+			->getItem($this->star_id);
+	}
+
+	/**
+	 * @throws ApiException|JsonException|ModelException
+	 * @return Model
+	 */
+	public function constellation()
+	{
+		return (new \Eve\Collections\Universe\Constellation)
+			->getItem($this->constellation_id);
 	}
 }
