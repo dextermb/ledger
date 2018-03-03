@@ -2,6 +2,7 @@
 namespace Eve\Abstracts;
 
 use Eve\Helpers\Request;
+use Eve\Helpers\ModelGroup;
 
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
@@ -35,7 +36,7 @@ class Collection implements \Eve\Interfaces\Collection
 	 * @param int   $offset
 	 * @param int   $limit
 	 * @throws ApiException|JsonException|ModelException
-	 * @return Model[]
+	 * @return ModelGroup
 	 */
 	public function getItems(array $ids = [], int $offset = 0, int $limit = 50)
 	{
@@ -47,13 +48,14 @@ class Collection implements \Eve\Interfaces\Collection
 		}
 
 		$output = [];
+		$request = new Request;
 
 		foreach ($ids as $key => $id) {
 			if ($key < $offset) {
 				continue;
 			}
 
-			$request = (new Request)->setEndpoint($this->base_uri . "/{$id}");
+			$request->setEndpoint($this->base_uri . "/{$id}");
 
 			if ($transform) {
 				$request->setModel($this->model);
@@ -61,12 +63,12 @@ class Collection implements \Eve\Interfaces\Collection
 
 			$output[] = $request->run();
 
-			if ($key === $limit) {
+			if ($limit > 0 && $key === $limit) {
 				break;
 			}
 		}
 
-		return $output;
+		return new ModelGroup($output);
 	}
 
 	/**
@@ -78,7 +80,7 @@ class Collection implements \Eve\Interfaces\Collection
 	 */
 	public function getItem(int $id)
 	{
-		return $this->getItems([ $id ])[0];
+		return $this->getItems([ $id ])->all()[0];
 	}
 
 	/**

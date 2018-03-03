@@ -4,7 +4,7 @@ namespace Eve\Collections\Universe;
 use Eve\Helpers\Request;
 
 use Eve\Abstracts\Collection;
-use Eve\Abstracts\Model;
+use Eve\Helpers\ModelGroup;
 
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
@@ -29,14 +29,16 @@ final class Ancestor extends Collection
 	 * @param int   $offset
 	 * @param int   $limit
 	 * @throws ApiException|JsonException
-	 * @return array|Model|Model[]
+	 * @return ModelGroup
 	 */
 	public function getItems(array $ids = [], int $offset = 0, int $limit = 50)
 	{
-		return (new Request)
+		$output = (new Request)
 			->setModel($this->model)
 			->setEndpoint($this->base_uri)
 			->run();
+
+		return new ModelGroup($output);
 	}
 
 	/**

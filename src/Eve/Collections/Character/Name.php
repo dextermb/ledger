@@ -4,7 +4,7 @@ namespace Eve\Collections\Character;
 use Eve\Helpers\Request;
 
 use Eve\Abstracts\Collection;
-use Eve\Abstracts\Model;
+use Eve\Helpers\ModelGroup;
 
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
@@ -27,14 +27,16 @@ final class Name extends Collection
 	/**
 	 * @param int[] $ids
 	 * @throws ApiException|JsonException
-	 * @return Model[]
+	 * @return ModelGroup
 	 */
 	public function getItems(array $ids = [])
 	{
-		return (new Request)
+		$output = (new Request)
 			->setModel($this->model)
 			->setEndpoint($this->base_uri . '?character_ids=' . implode(',', $ids))
 			->run();
+
+		return new ModelGroup($output);
 	}
 
 	/**

@@ -3,7 +3,7 @@ namespace Eve\Collections\Search;
 
 use Eve\Helpers\Request;
 
-use Eve\Abstracts\Model;
+use Eve\Helpers\ModelGroup;
 
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
@@ -24,17 +24,20 @@ final class Search
 	}
 
 	/**
-	 * @param       $search
-	 * @param array $categories
+	 * @param array $ids
+	 * @param int   $offset
+	 * @param int   $limit
 	 * @throws ApiException|JsonException
-	 * @return Model
+	 * @return ModelGroup
 	 */
-	public function getItems(string $search, array $categories)
+	public function getItems(array $ids = [], int $offset = 0, int $limit = 50)
 	{
-		return (new Request)
+		$output = (new Request)
 			->setModel($this->model)
-			->setEndpoint($this->base_uri . '?search=' . $search . '&categories=' . implode(',', $categories))
+			->setEndpoint($this->base_uri)
 			->run();
+
+		return new ModelGroup($output);
 	}
 
 	/**

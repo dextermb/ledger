@@ -4,6 +4,7 @@ namespace Eve\Collections\Alliances;
 use Eve\Helpers\Request;
 
 use Eve\Abstracts\Collection;
+use Eve\Helpers\ModelGroup;
 use Eve\Abstracts\Model;
 
 use Eve\Exceptions\ApiException;
@@ -27,14 +28,16 @@ final class Name extends Collection
 	/**
 	 * @param int[] $ids
 	 * @throws ApiException|JsonException
-	 * @return Model[]
+	 * @return ModelGroup
 	 */
 	public function getItems(array $ids = [])
 	{
-		return (new Request)
+		$output = (new Request)
 			->setModel($this->model)
 			->setEndpoint($this->base_uri . '?alliance_ids=' . implode(',', $ids))
 			->run();
+
+		return new ModelGroup($output);
 	}
 
 	/**
@@ -44,6 +47,6 @@ final class Name extends Collection
 	 */
 	public function getItem(int $id)
 	{
-		return $this->getItems([ $id ])[0];
+		return $this->getItems([ $id ])->all()[0];
 	}
 }
