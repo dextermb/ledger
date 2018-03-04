@@ -2,14 +2,14 @@
 namespace Eve\Models\Corporations;
 
 use Eve\Abstracts\Model;
+use Eve\Traits\GetSystem;
 
 final class Starbase extends Model
 {
+	use GetSystem;
+
 	/** @var int $type_id */
 	public $type_id;
-
-	/** @var int $system_id */
-	public $system_id;
 
 	/** @var int $moon_id */
 	public $moon_id;

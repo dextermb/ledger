@@ -1,20 +1,25 @@
 <?php
 namespace Eve\Models\Corporations;
 
+use Eve\Helpers\ModelGroup;
 use Eve\Helpers\Request;
 
 use Eve\Abstracts\Model;
+
 use Eve\Traits\GetAlliance;
+use Eve\Traits\GetFaction;
 
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
 use Eve\Exceptions\ModelException;
+use Eve\Exceptions\NoAccessTokenException;
+use Eve\Exceptions\NoRefreshTokenException;
 
 use Eve\Collections\Character\Character;
 
 final class Corporation extends Model
 {
-	use GetAlliance;
+	use GetAlliance, GetFaction;
 
 	/** @var string $name */
 	public $name;
@@ -43,9 +48,6 @@ final class Corporation extends Model
 	/** @var string $url */
 	public $url;
 
-	/** @var int $faction_id */
-	public $faction_id;
-
 	/** @var int $home_station_id */
 	public $home_station_id;
 
@@ -53,7 +55,7 @@ final class Corporation extends Model
 	public $shares;
 
 	/**
-	 * @throws ApiException|JsonException|ModelException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model
 	 */
 	public function ceo()
@@ -62,7 +64,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException|ModelException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model
 	 */
 	public function creator()
@@ -71,17 +73,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
-	 * @return Model|null
-	 */
-	public function faction()
-	{
-		return (new \Eve\Collections\Universe\Faction)
-			->getItems()->where('id', $this->faction_id)[0];
-	}
-
-	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model
 	 */
 	public function homeStation()
@@ -91,7 +83,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function allianceHistory()
@@ -103,7 +95,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function blueprints()
@@ -115,7 +107,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function containerLogs()
@@ -127,7 +119,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function divisions()
@@ -139,7 +131,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function facilities()
@@ -151,7 +143,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function icons()
@@ -163,7 +155,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function medals()
@@ -175,7 +167,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function medalsIssued()
@@ -188,8 +180,8 @@ final class Corporation extends Model
 
 	/**
 	 * @param bool $transform
-	 * @throws ApiException|JsonException|ModelException
-	 * @return array
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
+	 * @return array|ModelGroup
 	 */
 	public function members(bool $transform = true)
 	{
@@ -205,7 +197,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return string
 	 */
 	public function membersLimit()
@@ -217,7 +209,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function memberTitles()
@@ -229,7 +221,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function memberTracking()
@@ -241,7 +233,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array
 	 */
 	public function outposts()
@@ -255,7 +247,7 @@ final class Corporation extends Model
 	 * TODO: MOVE THIS
 	 *
 	 * @param int $id
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function outpost(int $id)
@@ -266,7 +258,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function roles()
@@ -278,7 +270,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function rolesHistory()
@@ -290,7 +282,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function shareholders()
@@ -302,7 +294,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function standings()
@@ -314,7 +306,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function starbases()
@@ -329,7 +321,7 @@ final class Corporation extends Model
 	 * TODO: MOVE THIS
 	 *
 	 * @param int $id
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function starbase(int $id)
@@ -341,7 +333,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function structures()
@@ -353,7 +345,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function titles()
@@ -365,7 +357,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function assets()
@@ -377,7 +369,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function bookmarks()
@@ -389,7 +381,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function bookmarkFolders()
@@ -401,7 +393,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function contacts()
@@ -413,7 +405,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function contracts()
@@ -428,7 +420,7 @@ final class Corporation extends Model
 	 * TODO: MOVE THIS
 	 *
 	 * @param int $id
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function contractBids(int $id)
@@ -443,7 +435,7 @@ final class Corporation extends Model
 	 * TODO: MOVE THIS
 	 *
 	 * @param int $id
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function contractItems(int $id)
@@ -455,7 +447,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function factionWarfareStats()
@@ -467,7 +459,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function industryJobs()
@@ -479,7 +471,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function miningExtractions()
@@ -491,7 +483,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function miningObservers()
@@ -506,7 +498,7 @@ final class Corporation extends Model
 	 * TODO: MOVE THIS
 	 *
 	 * @param int $id
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function miningObserver(int $id)
@@ -518,7 +510,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function killMailRecent()
@@ -530,7 +522,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function orders()
@@ -542,7 +534,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function orderHistory()
@@ -554,7 +546,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function customsOffices()
@@ -566,7 +558,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function wallets()
@@ -581,7 +573,7 @@ final class Corporation extends Model
 	 * TODO: MOVE THIS
 	 *
 	 * @param int $id
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function walletJournal(int $id)
@@ -596,7 +588,7 @@ final class Corporation extends Model
 	 * TODO: MOVE THIS
 	 *
 	 * @param int $id
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function walletTransactions(int $id)
@@ -608,7 +600,7 @@ final class Corporation extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function offers()

@@ -6,6 +6,8 @@ use Eve\Abstracts\Model;
 
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
+use Eve\Exceptions\NoAccessTokenException;
+use Eve\Exceptions\NoRefreshTokenException;
 use Eve\Exceptions\NotImplementedException;
 
 final class Route
@@ -36,7 +38,7 @@ final class Route
 	/**
 	 * @param int $origin
 	 * @param int $destination
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model
 	 */
 	public function getItem(int $origin, int $destination)

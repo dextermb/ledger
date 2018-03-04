@@ -3,23 +3,23 @@ namespace Eve\Models\Universe;
 
 use Eve\Abstracts\Model;
 use Eve\Traits\GetCorporation;
+use Eve\Traits\GetSystem;
 
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
 use Eve\Exceptions\ModelException;
+use Eve\Exceptions\NoAccessTokenException;
+use Eve\Exceptions\NoRefreshTokenException;
 
 final class Faction extends Model
 {
-	use GetCorporation;
+	use GetCorporation, GetSystem;
 
 	/** @var string $name */
 	public $name;
 
 	/** @var string $description */
 	public $description;
-
-	/** @var int $system_id */
-	public $system_id;
 
 	/** @var int $militia_corporation_id */
 	public $militia_corporation_id;
@@ -45,17 +45,7 @@ final class Faction extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException|ModelException
-	 * @return Model
-	 */
-	public function system()
-	{
-		return (new \Eve\Collections\Universe\System)
-			->getItem($this->system_id);
-	}
-
-	/**
-	 * @throws ApiException|JsonException|ModelException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model
 	 */
 	public function militia()

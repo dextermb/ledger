@@ -6,6 +6,8 @@ use Eve\Abstracts\Model;
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
 use Eve\Exceptions\ModelException;
+use Eve\Exceptions\NoAccessTokenException;
+use Eve\Exceptions\NoRefreshTokenException;
 
 final class Type extends Model
 {
@@ -62,7 +64,7 @@ final class Type extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException|ModelException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model
 	 */
 	public function group()
@@ -72,7 +74,7 @@ final class Type extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException|ModelException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model
 	 */
 	public function marketGroup()
@@ -82,7 +84,7 @@ final class Type extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException|ModelException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model
 	 */
 	public function icon()
@@ -92,7 +94,7 @@ final class Type extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException|ModelException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model
 	 */
 	public function graphic()

@@ -6,6 +6,8 @@ use Eve\Abstracts\Model;
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
 use Eve\Exceptions\ModelException;
+use Eve\Exceptions\NoAccessTokenException;
+use Eve\Exceptions\NoRefreshTokenException;
 
 class Mail extends Model
 {
@@ -32,7 +34,7 @@ class Mail extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException|ModelException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model
 	 */
 	public function from()

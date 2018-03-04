@@ -6,6 +6,8 @@ use Eve\Abstracts\Model;
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
 use Eve\Exceptions\ModelException;
+use Eve\Exceptions\NoAccessTokenException;
+use Eve\Exceptions\NoRefreshTokenException;
 
 final class Bookmark extends Model
 {
@@ -41,7 +43,7 @@ final class Bookmark extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException|ModelException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model
 	 */
 	public function creator() {

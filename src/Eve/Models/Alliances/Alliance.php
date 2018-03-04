@@ -8,6 +8,8 @@ use Eve\Abstracts\Model;
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
 use Eve\Exceptions\ModelException;
+use Eve\Exceptions\NoAccessTokenException;
+use Eve\Exceptions\NoRefreshTokenException;
 
 use Eve\Collections\Character\Character;
 
@@ -32,7 +34,7 @@ final class Alliance extends Model
 	public $date_founded;
 
 	/**
-	 * @throws ApiException|JsonException|ModelException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model
 	 */
 	public function creator()
@@ -41,7 +43,7 @@ final class Alliance extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException|ModelException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model
 	 */
 	public function creatorCorporation()
@@ -54,7 +56,7 @@ final class Alliance extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException|ModelException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model
 	 */
 	public function executorCorporation()
@@ -67,7 +69,7 @@ final class Alliance extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return int[]
 	 */
 	public function corporations()
@@ -78,7 +80,7 @@ final class Alliance extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return int[]
 	 */
 	public function icons()
@@ -90,7 +92,7 @@ final class Alliance extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return int[]
 	 */
 	public function contacts()

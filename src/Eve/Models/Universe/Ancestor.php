@@ -6,6 +6,8 @@ use Eve\Abstracts\Model;
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
 use Eve\Exceptions\ModelException;
+use Eve\Exceptions\NoAccessTokenException;
+use Eve\Exceptions\NoRefreshTokenException;
 
 final class Ancestor extends Model
 {
@@ -25,7 +27,7 @@ final class Ancestor extends Model
 	public $icon_id;
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model|null
 	 */
 	public function bloodline()
@@ -35,7 +37,7 @@ final class Ancestor extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException|ModelException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model
 	 */
 	public function icon()

@@ -2,11 +2,11 @@
 namespace Eve\Models\Shared\FactionWarfare;
 
 use Eve\Abstracts\Model;
+use Eve\Traits\GetFaction;
 
 class Stat extends Model
 {
-	/** @var int $faction_id */
-	public $faction_id;
+	use GetFaction;
 
 	/** @var string $enlisted_on */
 	public $enlisted_on;

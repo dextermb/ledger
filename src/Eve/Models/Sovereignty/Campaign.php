@@ -2,18 +2,20 @@
 namespace Eve\Models\Sovereignty;
 
 use Eve\Abstracts\Model;
+use Eve\Traits\GetSystem;
 
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
 use Eve\Exceptions\ModelException;
+use Eve\Exceptions\NoAccessTokenException;
+use Eve\Exceptions\NoRefreshTokenException;
 
 final class Campaign extends Model
 {
+	use GetSystem;
+
 	/** @var int $structure_id */
 	public $structure_id;
-
-	/** @var int $system_id */
-	public $system_id;
 
 	/** @var int $constellation_id */
 	public $constellation_id;
@@ -45,7 +47,7 @@ final class Campaign extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException|ModelException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model
 	 */
 	public function structure()
@@ -55,17 +57,7 @@ final class Campaign extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException|ModelException
-	 * @return Model
-	 */
-	public function system()
-	{
-		return (new \Eve\Collections\Universe\System)
-			->getItem($this->system_id);
-	}
-
-	/**
-	 * @throws ApiException|JsonException|ModelException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model
 	 */
 	public function constellation()
@@ -75,7 +67,7 @@ final class Campaign extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException|ModelException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model|null
 	 */
 	public function defender()

@@ -2,13 +2,18 @@
 namespace Eve\Models\Universe;
 
 use Eve\Abstracts\Model;
+use Eve\Traits\GetSystem;
 
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
 use Eve\Exceptions\ModelException;
+use Eve\Exceptions\NoAccessTokenException;
+use Eve\Exceptions\NoRefreshTokenException;
 
 final class Planet extends Model
 {
+	use GetSystem;
+
 	/** @var string $name */
 	public $name;
 
@@ -18,9 +23,6 @@ final class Planet extends Model
 	/** @var array $position */
 	public $position;
 
-	/** @var int $system_id */
-	public $system_id;
-
 	public function map()
 	{
 		return [
@@ -29,22 +31,12 @@ final class Planet extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException|ModelException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model
 	 */
 	public function type()
 	{
 		return (new \Eve\Collections\Universe\Type)
 			->getItem($this->type_id);
-	}
-
-	/**
-	 * @throws ApiException|JsonException|ModelException
-	 * @return Model
-	 */
-	public function system()
-	{
-		return (new \Eve\Collections\Universe\System)
-			->getItem($this->system_id);
 	}
 }

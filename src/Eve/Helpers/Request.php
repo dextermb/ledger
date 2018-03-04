@@ -2,11 +2,13 @@
 namespace Eve\Helpers;
 
 use Eve\Eve;
-use Eve\Helpers\Session;
 use Eve\Abstracts\Model;
 
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
+use Eve\Exceptions\ModelException;
+use Eve\Exceptions\NoAccessTokenException;
+use Eve\Exceptions\NoRefreshTokenException;
 
 final class Request
 {
@@ -55,6 +57,9 @@ final class Request
 	/** @var bool $expect_json */
 	protected $expect_json = true;
 
+	/**
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
+	 */
 	public function __construct()
 	{
 		$eve     = Eve::init();
@@ -195,7 +200,7 @@ final class Request
 	 * Send an API request to ESI
 	 *
 	 * @param bool $post
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model|Model[]|array
 	 */
 	public function run(bool $post = false)
@@ -307,7 +312,7 @@ final class Request
 		}
 
 		/** @var Model $model */
-		$model = new $class;
+		$model = new $class($data['id']);
 
 		if (method_exists($model, 'map')) {
 			$map = $model->map();
@@ -330,7 +335,9 @@ final class Request
 		$attributes = array_keys(get_object_vars($model));
 
 		foreach ($attributes as $attribute) {
-			$model->{$attribute} = $data[ $attribute ];
+			if (isset($data[ $attribute ])) {
+				$model->{$attribute} = $data[ $attribute ];
+			};
 		}
 
 		return $model;

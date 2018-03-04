@@ -6,6 +6,8 @@ use Eve\Traits\GetCorporation;
 
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
+use Eve\Exceptions\NoAccessTokenException;
+use Eve\Exceptions\NoRefreshTokenException;
 
 final class Bloodline extends Model
 {
@@ -43,7 +45,7 @@ final class Bloodline extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model|null
 	 */
 	public function race()

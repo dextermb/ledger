@@ -2,11 +2,11 @@
 namespace Eve\Models\FactionWarfare;
 
 use Eve\Abstracts\Model;
+use Eve\Traits\GetFaction;
 
 final class War extends Model
 {
-	/** @var int $faction_id */
-	public $faction_id;
+	use GetFaction;
 
 	/** @var int $against_id */
 	public $against_id;

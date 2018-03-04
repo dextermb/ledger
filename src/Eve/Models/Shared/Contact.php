@@ -3,13 +3,15 @@ namespace Eve\Models\Shared;
 
 use Eve\Abstracts\Model;
 
-use Eve\Collections\Alliances\Alliance;
-use Eve\Collections\Corporations\Corporation;
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
 use Eve\Exceptions\ModelException;
+use Eve\Exceptions\NoAccessTokenException;
+use Eve\Exceptions\NoRefreshTokenException;
 
+use Eve\Collections\Alliances\Alliance;
 use Eve\Collections\Character\Character;
+use Eve\Collections\Corporations\Corporation;
 
 final class Contact extends Model
 {
@@ -44,7 +46,7 @@ final class Contact extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException|ModelException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model|null
 	 */
 	public function alliance()
@@ -57,7 +59,7 @@ final class Contact extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException|ModelException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model|null
 	 */
 	public function character()
@@ -70,7 +72,7 @@ final class Contact extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException|ModelException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model|null
 	 */
 	public function corporation()

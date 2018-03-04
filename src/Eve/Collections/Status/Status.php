@@ -8,6 +8,8 @@ use Eve\Abstracts\Model;
 
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
+use Eve\Exceptions\NoAccessTokenException;
+use Eve\Exceptions\NoRefreshTokenException;
 use Eve\Exceptions\NotImplementedException;
 
 final class Status extends Collection
@@ -38,7 +40,7 @@ final class Status extends Collection
 
 	/**
 	 * @param int $id
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model
 	 */
 	public function getItem(int $id = null)

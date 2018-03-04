@@ -7,6 +7,8 @@ use Eve\Abstracts\Model;
 
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
+use Eve\Exceptions\NoAccessTokenException;
+use Eve\Exceptions\NoRefreshTokenException;
 use Eve\Exceptions\NotImplementedException;
 
 final class KillMail
@@ -38,7 +40,7 @@ final class KillMail
 	/**
 	 * @param int    $id
 	 * @param string $hash
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model
 	 */
 	public function getItem(int $id, string $hash)

@@ -2,14 +2,14 @@
 namespace Eve\Models\Shared\Industry;
 
 use Eve\Abstracts\Model;
+use Eve\Traits\GetSystem;
 
 class Facility extends Model
 {
+	use GetSystem;
+
 	/** @var int $type_id */
 	public $type_id;
-
-	/** @var int $system_id */
-	public $system_id;
 
 	public function map()
 	{

@@ -2,11 +2,11 @@
 namespace Eve\Models\FactionWarfare;
 
 use Eve\Abstracts\Model;
+use Eve\Traits\GetSystem;
 
 final class System extends Model
 {
-	/** @var int $solar_system_id */
-	public $solar_system_id;
+	use GetSystem;
 
 	/** @var int $owner_faction_id */
 	public $owner_faction_id;
@@ -22,4 +22,10 @@ final class System extends Model
 
 	/** @var bool $contested */
 	public $contested;
+
+	public function map() {
+		return [
+			'solar_system_id' => Model\Map::set('id')
+		];
+	}
 }

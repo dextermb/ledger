@@ -359,7 +359,7 @@ final class Eve
 	 * @param string $data
 	 * @param array  $headers
 	 * @param bool   $post
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array
 	 */
 	private function request($url, $data, array $headers = [], bool $post = true)

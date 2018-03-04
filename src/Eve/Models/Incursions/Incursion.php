@@ -2,9 +2,12 @@
 namespace Eve\Models\Incursions;
 
 use Eve\Abstracts\Model;
+use Eve\Traits\GetFaction;
 
 final class Incursion extends Model
 {
+	use GetFaction;
+
 	/** @var string $type */
 	public $type;
 
@@ -16,9 +19,6 @@ final class Incursion extends Model
 
 	/** @var bool $has_boss */
 	public $has_boss;
-
-	/** @var int $faction_id */
-	public $faction_id;
 
 	/** @var int $constellation_id */
 	public $constellation_id;

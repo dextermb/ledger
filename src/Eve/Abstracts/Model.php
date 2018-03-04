@@ -15,6 +15,14 @@ class Model implements \Eve\Interfaces\Model, \ArrayAccess
 	private $_attributes = [];
 
 	/**
+	 * @param int $id
+	 */
+	public function __construct(int $id = null)
+	{
+		$this->id = $id;
+	}
+
+	/**
 	 * @param $key
 	 * @return mixed|null
 	 */

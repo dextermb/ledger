@@ -6,6 +6,8 @@ use Eve\Helpers\Request;
 
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
+use Eve\Exceptions\NoAccessTokenException;
+use Eve\Exceptions\NoRefreshTokenException;
 
 final class Fleet extends Model
 {
@@ -22,7 +24,7 @@ final class Fleet extends Model
 	public $is_voice_enabled;
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function members()
@@ -34,7 +36,7 @@ final class Fleet extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return array|Model|Model[]
 	 */
 	public function wings()

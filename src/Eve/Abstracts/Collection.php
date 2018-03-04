@@ -7,6 +7,8 @@ use Eve\Helpers\ModelGroup;
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
 use Eve\Exceptions\ModelException;
+use Eve\Exceptions\NoAccessTokenException;
+use Eve\Exceptions\NoRefreshTokenException;
 
 class Collection implements \Eve\Interfaces\Collection
 {
@@ -18,7 +20,7 @@ class Collection implements \Eve\Interfaces\Collection
 	 * Get item IDs
 	 *
 	 * @return array
-	 * @throws ApiException|JsonException|ModelException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 */
 	public function getIds()
 	{
@@ -35,7 +37,7 @@ class Collection implements \Eve\Interfaces\Collection
 	 * @param int[] $ids
 	 * @param int   $offset
 	 * @param int   $limit
-	 * @throws ApiException|JsonException|ModelException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return ModelGroup
 	 */
 	public function getItems(array $ids = [], int $offset = 0, int $limit = 50)
@@ -75,7 +77,7 @@ class Collection implements \Eve\Interfaces\Collection
 	 * Get item details for an IDs
 	 *
 	 * @param int $id
-	 * @throws ApiException|JsonException|ModelException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model
 	 */
 	public function getItem(int $id)

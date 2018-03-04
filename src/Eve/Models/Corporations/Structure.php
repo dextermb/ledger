@@ -2,17 +2,16 @@
 namespace Eve\Models\Corporations;
 
 use Eve\Abstracts\Model;
+
 use Eve\Traits\GetCorporation;
+use Eve\Traits\GetSystem;
 
 final class Structure extends Model
 {
-	use GetCorporation;
+	use GetCorporation, GetSystem;
 
 	/** @var int $type_id */
 	public $type_id;
-
-	/** @var int $system_id */
-	public $system_id;
 
 	/** @var int $profile_id */
 	public $profile_id;

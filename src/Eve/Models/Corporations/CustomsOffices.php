@@ -2,11 +2,11 @@
 namespace Eve\Models\Corporations;
 
 use Eve\Abstracts\Model;
+use Eve\Traits\GetSystem;
 
 final class CustomsOffices extends Model
 {
-	/** @var int $system_id */
-	public $system_id;
+	use GetSystem;
 
 	/** @var int $reinforce_exit_start */
 	public $reinforce_exit_start;

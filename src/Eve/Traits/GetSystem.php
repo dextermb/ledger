@@ -9,23 +9,19 @@ use Eve\Exceptions\ModelException;
 use Eve\Exceptions\NoAccessTokenException;
 use Eve\Exceptions\NoRefreshTokenException;
 
-use Eve\Collections\Alliances\Alliance;
+use Eve\Collections\Universe\System;
 
-trait GetAlliance
+trait GetSystem
 {
-	/** @var int $alliance_id */
-	public $alliance_id;
+	/** @var int $system_id */
+	public $system_id;
 
 	/**
 	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
-	 * @return null|Model
+	 * @return Model
 	 */
-	public function alliance()
+	public function faction()
 	{
-		if (!$this->alliance_id) {
-			return null;
-		}
-
-		return (new Alliance)->getItem($this->alliance_id);
+		return (new System)->getItem($this->system_id);
 	}
 }

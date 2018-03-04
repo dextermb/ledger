@@ -2,14 +2,14 @@
 namespace Eve\Models\Corporations;
 
 use Eve\Abstracts\Model;
+use Eve\Traits\GetSystem;
 
 final class Outpost extends Model
 {
+	use GetSystem;
+
 	/** @var int $owner_id */
 	public $owner_id;
-
-	/** @var int $system_id */
-	public $system_id;
 
 	/** @var int $docking_cost_per_ship_volume */
 	public $docking_cost_per_ship_volume;

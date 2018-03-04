@@ -8,6 +8,8 @@ use Eve\Helpers\ModelGroup;
 
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
+use Eve\Exceptions\NoAccessTokenException;
+use Eve\Exceptions\NoRefreshTokenException;
 use Eve\Exceptions\NotImplementedException;
 
 final class Name extends Collection
@@ -26,7 +28,7 @@ final class Name extends Collection
 
 	/**
 	 * @param int[] $ids
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return ModelGroup
 	 */
 	public function getItems(array $ids = [])

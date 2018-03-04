@@ -2,13 +2,18 @@
 namespace Eve\Models\Universe;
 
 use Eve\Abstracts\Model;
+use Eve\Traits\GetSystem;
 
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
 use Eve\Exceptions\ModelException;
+use Eve\Exceptions\NoAccessTokenException;
+use Eve\Exceptions\NoRefreshTokenException;
 
 final class Station extends Model
 {
+	use GetSystem;
+
 	/** @var string $name */
 	public $name;
 
@@ -23,9 +28,6 @@ final class Station extends Model
 
 	/** @var array $position */
 	public $position;
-
-	/** @var int $system_id */
-	public $system_id;
 
 	/** @var int $reprocessing_efficiency */
 	public $reprocessing_efficiency;
@@ -50,7 +52,7 @@ final class Station extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException|ModelException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model
 	 */
 	public function type()
@@ -60,22 +62,12 @@ final class Station extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model|null
 	 */
 	public function rate()
 	{
 		return (new \Eve\Collections\Universe\Race)
 			->getItems()->where('id', $this->race_id)[0];
-	}
-
-	/**
-	 * @throws ApiException|JsonException|ModelException
-	 * @return Model
-	 */
-	public function system()
-	{
-		return (new \Eve\Collections\Universe\System)
-			->getItem($this->system_id);
 	}
 }

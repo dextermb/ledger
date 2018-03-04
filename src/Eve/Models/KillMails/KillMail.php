@@ -2,9 +2,12 @@
 namespace Eve\Models\KillMails;
 
 use Eve\Abstracts\Model;
+use Eve\Traits\GetSystem;
 
 final class KillMail extends Model
 {
+	use GetSystem;
+
 	/** @var string $killmail_time */
 	public $killmail_time;
 
@@ -13,9 +16,6 @@ final class KillMail extends Model
 
 	/** @var array $attackers */
 	public $attackers;
-
-	/** @var int $solar_system_id */
-	public $solar_system_id;
 
 	/** @var int $moon_id */
 	public $moon_id;
@@ -27,6 +27,7 @@ final class KillMail extends Model
 	{
 		return [
 			'killmail_id' => Model\Map::set('id'),
+			'solar_system_id' => Model\Map::set('system_id')
 		];
 	}
 }

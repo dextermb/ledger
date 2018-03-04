@@ -3,17 +3,17 @@ namespace Eve\Models\Sovereignty;
 
 use Eve\Abstracts\Model;
 use Eve\Traits\GetAlliance;
+use Eve\Traits\GetSystem;
 
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
 use Eve\Exceptions\ModelException;
+use Eve\Exceptions\NoAccessTokenException;
+use Eve\Exceptions\NoRefreshTokenException;
 
 final class Structure extends Model
 {
-	use GetAlliance;
-
-	/** @var int $solar_system_id */
-	public $system_id;
+	use GetAlliance, GetSystem;
 
 	/** @var int $type_id */
 	public $type_id;
@@ -37,17 +37,7 @@ final class Structure extends Model
 	}
 
 	/**
-	 * @throws ApiException|JsonException|ModelException
-	 * @return Model
-	 */
-	public function system()
-	{
-		return (new \Eve\Collections\Universe\System)
-			->getItem($this->system_id);
-	}
-
-	/**
-	 * @throws ApiException|JsonException|ModelException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model
 	 */
 	public function type()

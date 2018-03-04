@@ -8,6 +8,8 @@ use Eve\Helpers\ModelGroup;
 
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
+use Eve\Exceptions\NoAccessTokenException;
+use Eve\Exceptions\NoRefreshTokenException;
 use Eve\Exceptions\NotImplementedException;
 
 final class Faction extends Collection
@@ -28,7 +30,7 @@ final class Faction extends Collection
 	 * @param array $ids
 	 * @param int   $offset
 	 * @param int   $limit
-	 * @throws ApiException|JsonException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return ModelGroup
 	 */
 	public function getItems(array $ids = [], int $offset = 0, int $limit = 50)
