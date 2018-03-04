@@ -1,7 +1,9 @@
 <?php
 namespace Eve;
 
+use Eve\Helpers\DB;
 use Eve\Helpers\Session;
+
 use Eve\Collections\Character\Character;
 
 use Eve\Exceptions\ApiException;
@@ -214,12 +216,19 @@ final class Eve
 
 		$this->self();
 
+		$this->storeUser(
+			$session->self->id,
+			$session->access_token,
+			$session->refresh_token,
+			$session->valid_until
+		);
+
 		return true;
 	}
 
 	/**
 	 * @throws ApiException|JsonException|ModelException|NoRefreshTokenException|NoAccessTokenException
-	 * @return bool
+	 * @return array
 	 */
 	public function refresh()
 	{
@@ -243,7 +252,43 @@ final class Eve
 
 		$this->self();
 
-		return true;
+		$this->storeUser(
+			$session->self->id,
+			$session->access_token,
+			$session->refresh_token,
+			$session->valid_until
+		);
+
+		return [ $session->access_token, $session->refresh_token, $session->valid_until ];
+	}
+
+	/**
+	 * @param int    $id
+	 * @param string $refresh_token
+	 * @throws ApiException|JsonException|ModelException|NoRefreshTokenException|NoAccessTokenException
+	 * @return array
+	 */
+	public function refreshOther(int $id, string $refresh_token)
+	{
+		$json = $this->request(
+			'https://login.eveonline.com/oauth/token',
+			http_build_query([
+				'grant_type'    => 'refresh_token',
+				'refresh_token' => $refresh_token,
+			]),
+			[ 'content_type' => 'Content-Type: application/x-www-form-urlencoded' ]
+		);
+
+		$valid_until = time() + self::EXPIRE_TIME;
+
+		$this->storeUser(
+			$id,
+			$json['access_token'],
+			$json['refresh_token'],
+			$valid_until
+		);
+
+		return [ $json['access_token'], $json['refresh_token'], $valid_until ];
 	}
 
 	/**
@@ -272,22 +317,41 @@ final class Eve
 	}
 
 	/**
+	 * @param int $valid_until
 	 * @return bool
 	 */
-	public function hasExpired()
+	public function hasExpired(int $valid_until = null)
 	{
-		return time() >= Session::init()->valid_until;
+		return time() >= ($valid_until ?: Session::init()->valid_until);
 	}
 
 	/**
 	 * @throws ApiException|JsonException|ModelException|NoRefreshTokenException|NoAccessTokenException
-	 * @return void
+	 * @return array|bool
 	 */
 	public function refreshIfExpired()
 	{
 		if ($this->hasExpired()) {
-			$this->refresh();
+			return $this->refresh();
 		}
+
+		return false;
+	}
+
+	/**
+	 * @param int    $id
+	 * @param string $refresh_token
+	 * @param int    $valid_until
+	 * @throws ApiException|JsonException|ModelException|NoRefreshTokenException|NoAccessTokenException
+	 * @return array|bool
+	 */
+	public function refreshOtherIfExpired(int $id, string $refresh_token, int $valid_until)
+	{
+		if ($this->hasExpired($valid_until)) {
+			return $this->refreshOther($id, $refresh_token);
+		}
+
+		return false;
 	}
 
 	/**
@@ -308,16 +372,13 @@ final class Eve
 			CURLOPT_FOLLOWLOCATION => true,
 			CURLOPT_POST           => $post,
 			CURLOPT_CUSTOMREQUEST  => $post ? 'POST' : 'GET',
+			CURLOPT_POSTFIELDS     => $data,
 			CURLOPT_HTTPHEADER     => array_values(array_merge([
 				'authorization' => 'Authorization: Basic ' . base64_encode($this->client_id . ':' . $this->client_secret),
 				'content_type'  => 'Content-Type: application/json',
 				'host'          => 'Host: login.eveonline.com',
 			], $headers)),
 		]);
-
-		if ($post) {
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-		}
 
 		$response = curl_exec($ch);
 		$json     = json_decode($response, true);
@@ -331,5 +392,25 @@ final class Eve
 		}
 
 		return $json;
+	}
+
+	private function storeUser(int $id, string $access_token, string $refresh_token, int $valid_until)
+	{
+		if (filter_var(env('USE_DB', false), FILTER_VALIDATE_BOOLEAN)) {
+			try {
+				$pdo = \Eve\Helpers\DB::init();
+
+				$sth = $pdo->prepare('CALL store_user(:id, :access_token, :refresh_token, :valid_until)');
+
+				$sth->bindParam(':id', $id, \PDO::PARAM_INT);
+				$sth->bindParam(':access_token', $access_token, \PDO::PARAM_STR);
+				$sth->bindParam(':refresh_token', $refresh_token, \PDO::PARAM_STR);
+				$sth->bindParam(':valid_until', $valid_until, \PDO::PARAM_INT);
+
+				$sth->execute();
+			} catch (\PDOException $e) {
+				dump($e);
+			}
+		}
 	}
 }
