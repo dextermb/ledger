@@ -26,7 +26,7 @@ final class ModelGroup implements \ArrayAccess
 	 */
 	public function empty()
 	{
-		return empty($models);
+		return empty($this->models);
 	}
 
 	/**
