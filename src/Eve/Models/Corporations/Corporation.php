@@ -24,8 +24,8 @@ final class Corporation extends Model
 	/** @var string $name */
 	public $name;
 
-	/** @var string $ticket */
-	public $ticket;
+	/** @var string $ticker */
+	public $ticker;
 
 	/** @var int $member_count */
 	public $member_count;

@@ -106,7 +106,7 @@ final class Request
 	 */
 	public function setEndpoint(string $endpoint)
 	{
-		$this->endpoint = !endsWith($endpoint, '/')
+		$this->endpoint = !endsWith($endpoint, '/') && strpos($endpoint, '?') === false
 			? $endpoint . '/'
 			: $endpoint;
 

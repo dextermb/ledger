@@ -9,13 +9,14 @@ use Eve\Abstracts\Model;
 
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
+use Eve\Exceptions\ModelException;
 use Eve\Exceptions\NoAccessTokenException;
 use Eve\Exceptions\NoRefreshTokenException;
 use Eve\Exceptions\NotImplementedException;
 
 final class Name extends Collection
 {
-	protected $base_uri = '/character/names';
+	protected $base_uri = '/alliances/names';
 	protected $model    = \Eve\Models\Alliances\Name::class;
 
 	/**
