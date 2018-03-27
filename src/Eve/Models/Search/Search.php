@@ -2,6 +2,15 @@
 namespace Eve\Models\Search;
 
 use Eve\Abstracts\Model;
+use Eve\Helpers\ModelGroup;
+
+use Eve\Collections\Corporations\Corporation;
+
+use Eve\Exceptions\ApiException;
+use Eve\Exceptions\JsonException;
+use Eve\Exceptions\ModelException;
+use Eve\Exceptions\NoAccessTokenException;
+use Eve\Exceptions\NoRefreshTokenException;
 
 final class Search extends Model
 {
@@ -34,4 +43,13 @@ final class Search extends Model
 
 	/** @var array $station */
 	public $station;
+
+	/**
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
+	 * @return ModelGroup
+	 */
+	public function corporations()
+	{
+		return (new Corporation)->getItems($this->corporation);
+	}
 }

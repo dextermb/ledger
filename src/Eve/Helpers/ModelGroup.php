@@ -22,6 +22,14 @@ final class ModelGroup implements \ArrayAccess
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function empty()
+	{
+		return empty($models);
+	}
+
+	/**
 	 * @param string|array $key
 	 * @param mixed        $value
 	 * @return ModelGroup

@@ -2,11 +2,11 @@
 namespace Eve\Collections\Search;
 
 use Eve\Helpers\Request;
-
-use Eve\Helpers\ModelGroup;
+use Eve\Abstracts\Model;
 
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
+use Eve\Exceptions\ModelException;
 use Eve\Exceptions\NoAccessTokenException;
 use Eve\Exceptions\NoRefreshTokenException;
 use Eve\Exceptions\NotImplementedException;
@@ -26,20 +26,25 @@ final class Search
 	}
 
 	/**
-	 * @param array $ids
-	 * @param int   $offset
-	 * @param int   $limit
+	 * @param string $query
+	 * @param array  $categories
+	 * @param bool   $strict
 	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
-	 * @return ModelGroup
+	 * @return Model
 	 */
-	public function getItems(array $ids = [], int $offset = 0, int $limit = 50)
+	public function getItems(string $query, array $categories, bool $strict = false)
 	{
 		$output = (new Request)
 			->setModel($this->model)
-			->setEndpoint($this->base_uri)
+			->setEndpoint(
+				$this->base_uri
+				. '?categories=' . implode(',', $categories)
+				. '&search=' . $query
+				. '&strict=' . var_export($strict, true)
+			)
 			->run();
 
-		return new ModelGroup($output);
+		return $output;
 	}
 
 	/**

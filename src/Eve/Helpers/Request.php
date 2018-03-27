@@ -110,6 +110,8 @@ final class Request
 			? $endpoint . '/'
 			: $endpoint;
 
+		$this->endpoint = preg_replace('/\s+/', '%20', $this->endpoint);
+
 		return $this;
 	}
 
