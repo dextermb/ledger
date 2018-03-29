@@ -30,6 +30,28 @@ final class ModelGroup implements \ArrayAccess
 	}
 
 	/**
+	 * @return Model|null
+	 */
+	public function first() {
+		if($this->empty()) {
+			return null;
+		}
+
+		return $this->models[0];
+	}
+
+	/**
+	 * @return Model|null
+	 */
+	public function last() {
+		if($this->empty()) {
+			return null;
+		}
+
+		return end($this->models);
+	}
+
+	/**
 	 * @param string|array $key
 	 * @param mixed        $value
 	 * @return ModelGroup

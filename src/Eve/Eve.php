@@ -192,7 +192,7 @@ final class Eve
 
 	/**
 	 * @param string $code
-	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return bool
 	 */
 	public function verify(string $code)
@@ -215,13 +215,6 @@ final class Eve
 		$session->valid_until   = time() + self::EXPIRE_TIME;
 
 		$this->self();
-
-		$this->storeUser(
-			$session->self->id,
-			$session->access_token,
-			$session->refresh_token,
-			$session->valid_until
-		);
 
 		return true;
 	}
@@ -252,47 +245,11 @@ final class Eve
 
 		$this->self();
 
-		$this->storeUser(
-			$session->self->id,
-			$session->access_token,
-			$session->refresh_token,
-			$session->valid_until
-		);
-
 		return [ $session->access_token, $session->refresh_token, $session->valid_until ];
 	}
 
 	/**
-	 * @param int    $id
-	 * @param string $refresh_token
-	 * @throws ApiException|JsonException|ModelException|NoRefreshTokenException|NoAccessTokenException
-	 * @return array
-	 */
-	public function refreshOther(int $id, string $refresh_token)
-	{
-		$json = $this->request(
-			'https://login.eveonline.com/oauth/token',
-			http_build_query([
-				'grant_type'    => 'refresh_token',
-				'refresh_token' => $refresh_token,
-			]),
-			[ 'content_type' => 'Content-Type: application/x-www-form-urlencoded' ]
-		);
-
-		$valid_until = time() + self::EXPIRE_TIME;
-
-		$this->storeUser(
-			$id,
-			$json['access_token'],
-			$json['refresh_token'],
-			$valid_until
-		);
-
-		return [ $json['access_token'], $json['refresh_token'], $valid_until ];
-	}
-
-	/**
-	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return \Eve\Models\Character\Character
 	 */
 	public function self()
@@ -310,8 +267,9 @@ final class Eve
 
 		$session = Session::init();
 
-		/** @var \Eve\Models\Character\Character $session ->self */
+		/** @var \Eve\Models\Character\Character $session -> self */
 		$session->self = (new Character)->getItem($json['CharacterID']);
+		$session->self->setAuth($session->access_token, $session->refresh_token, $session->valid_until);
 
 		return $session->self;
 	}
@@ -333,22 +291,6 @@ final class Eve
 	{
 		if ($this->hasExpired()) {
 			return $this->refresh();
-		}
-
-		return false;
-	}
-
-	/**
-	 * @param int    $id
-	 * @param string $refresh_token
-	 * @param int    $valid_until
-	 * @throws ApiException|JsonException|ModelException|NoRefreshTokenException|NoAccessTokenException
-	 * @return array|bool
-	 */
-	public function refreshOtherIfExpired(int $id, string $refresh_token, int $valid_until)
-	{
-		if ($this->hasExpired($valid_until)) {
-			return $this->refreshOther($id, $refresh_token);
 		}
 
 		return false;
@@ -392,25 +334,5 @@ final class Eve
 		}
 
 		return $json;
-	}
-
-	private function storeUser(int $id, string $access_token, string $refresh_token, int $valid_until)
-	{
-		if (filter_var(env('USE_DB', false), FILTER_VALIDATE_BOOLEAN)) {
-			try {
-				$pdo = \Eve\Helpers\DB::init();
-
-				$sth = $pdo->prepare('CALL store_user(:id, :access_token, :refresh_token, :valid_until)');
-
-				$sth->bindParam(':id', $id, \PDO::PARAM_INT);
-				$sth->bindParam(':access_token', $access_token, \PDO::PARAM_STR);
-				$sth->bindParam(':refresh_token', $refresh_token, \PDO::PARAM_STR);
-				$sth->bindParam(':valid_until', $valid_until, \PDO::PARAM_INT);
-
-				$sth->execute();
-			} catch (\PDOException $e) {
-				dump($e);
-			}
-		}
 	}
 }

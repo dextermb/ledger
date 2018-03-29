@@ -56,46 +56,51 @@ final class Character extends Model
 	public $valid_until;
 
 	/**
-	 * @param int $id
-	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
+	 * @param string $access_token
+	 * @param string $refresh_token
+	 * @param int    $valid_until
+	 * @return $this
 	 */
-	public function __construct(int $id = null)
+	public function setAuth(string $access_token, string $refresh_token = null, int $valid_until = null)
 	{
-		parent::__construct($id);
+		$this->access_token  = $access_token;
+		$this->refresh_token = $refresh_token;
+		$this->valid_until   = $valid_until;
 
-		$session = new Session;
+		return $this;
+	}
 
-		if ($this->id != $session->self->id) {
-			if (is_numeric($this->id)) {
-				$pdo = DB::init();
+	/**
+	 * @param string $access_token
+	 * @return $this
+	 */
+	public function setAccessToken(string $access_token)
+	{
+		$this->access_token = $access_token;
 
-				$sth = $pdo->prepare('CALL get_user(:id)');
+		return $this;
+	}
 
-				$sth->bindParam(':id', $this->id, \PDO::PARAM_INT);
-				$sth->execute();
+	/**
+	 * @param string $refresh_token
+	 * @return $this
+	 */
+	public function setRefreshToken(string $refresh_token)
+	{
+		$this->refresh_token = $refresh_token;
 
-				if ($sth->rowCount()) {
-					list($this->access_token, $this->refresh_token, $this->valid_until)
-						= $sth->fetch(\PDO::FETCH_ASSOC);
+		return $this;
+	}
 
-					if ($data = Eve::init()->refreshOtherIfExpired($this->id, $this->refresh_token, $this->valid_until)) {
-						list($this->access_token, $this->refresh_token, $this->valid_until)
-							= $data;
-					}
-				}
-			}
+	/**
+	 * @param int $valid_until
+	 * @return $this
+	 */
+	public function setValidUntil(int $valid_until)
+	{
+		$this->valid_until = $valid_until;
 
-			return;
-		}
-
-		$this->access_token  = $session->access_token;
-		$this->refresh_token = $session->refresh_token;
-		$this->valid_until   = $session->valid_until;
-
-		if ($data = Eve::init()->refreshIfExpired()) {
-			list($this->access_token, $this->refresh_token, $this->valid_until)
-				= $data;
-		}
+		return $this;
 	}
 
 	/**

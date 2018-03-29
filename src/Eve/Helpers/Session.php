@@ -1,13 +1,15 @@
 <?php
 namespace Eve\Helpers;
 
+use Eve\Models\Character\Character;
+
 /**
  * Class Session
  *
- * @property $access_token
- * @property $refresh_token
- * @property $valid_until
- * @property $self
+ * @property string $access_token
+ * @property string $refresh_token
+ * @property int $valid_until
+ * @property Character $self
  *
  * @package Eve\Helpers
  */
