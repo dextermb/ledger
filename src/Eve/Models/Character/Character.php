@@ -1,13 +1,8 @@
 <?php
 namespace Eve\Models\Character;
 
-use Eve\Eve;
-use Eve\Helpers\DB;
-use Eve\Helpers\Request;
-
 use Eve\Abstracts\Model;
 
-use Eve\Helpers\Session;
 use Eve\Traits\GetAlliance;
 use Eve\Traits\GetCorporation;
 use Eve\Traits\GetFaction;
@@ -109,9 +104,8 @@ final class Character extends Model
 	 */
 	public function agentsResearch()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(AgentsResearch::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/agents_research')
 			->run();
 	}
@@ -122,9 +116,8 @@ final class Character extends Model
 	 */
 	public function blueprints()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(\Eve\Models\Shared\Blueprint::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/blueprints')
 			->run();
 	}
@@ -135,9 +128,8 @@ final class Character extends Model
 	 */
 	public function chatChannels()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(ChatChannel::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/chat_channels')
 			->run();
 	}
@@ -148,9 +140,8 @@ final class Character extends Model
 	 */
 	public function corporationHistory()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(CorporationHistory::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/corporationhistory')
 			->run();
 	}
@@ -161,9 +152,8 @@ final class Character extends Model
 	 */
 	public function fatigue()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Fatigue::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/fatigue')
 			->run();
 	}
@@ -174,9 +164,8 @@ final class Character extends Model
 	 */
 	public function medals()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Medal::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/medals')
 			->run();
 	}
@@ -187,9 +176,8 @@ final class Character extends Model
 	 */
 	public function notifications()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Notification::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/notifications')
 			->run();
 	}
@@ -200,9 +188,8 @@ final class Character extends Model
 	 */
 	public function notificationContacts()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Notifications\Contacts::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/notifications/contacts')
 			->run();
 	}
@@ -213,9 +200,8 @@ final class Character extends Model
 	 */
 	public function portrait()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Portrait::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/portrait')
 			->run();
 	}
@@ -226,9 +212,8 @@ final class Character extends Model
 	 */
 	public function roles()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Role::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/roles')
 			->run();
 	}
@@ -239,9 +224,8 @@ final class Character extends Model
 	 */
 	public function standings()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(\Eve\Models\Shared\Standing::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/standings')
 			->run();
 	}
@@ -252,9 +236,8 @@ final class Character extends Model
 	 */
 	public function stats()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Stat::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/stats')
 			->run();
 	}
@@ -265,9 +248,8 @@ final class Character extends Model
 	 */
 	public function titles()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(\Eve\Models\Shared\Title::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/titles')
 			->run();
 	}
@@ -278,9 +260,8 @@ final class Character extends Model
 	 */
 	public function assets()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(\Eve\Models\Shared\Asset::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/assets')
 			->run();
 	}
@@ -291,9 +272,8 @@ final class Character extends Model
 	 */
 	public function bookmarks()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(\Eve\Models\Shared\Bookmark::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/bookmarks')
 			->run();
 	}
@@ -304,9 +284,8 @@ final class Character extends Model
 	 */
 	public function bookmarkFolders()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(\Eve\Models\Shared\Bookmarks\Folder::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/bookmarks/folders')
 			->run();
 	}
@@ -317,9 +296,8 @@ final class Character extends Model
 	 */
 	public function calendar()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Calendar::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/calendar')
 			->run();
 	}
@@ -333,9 +311,8 @@ final class Character extends Model
 	 */
 	public function calendarEvent(int $id)
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Calendar\Event::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/calendar/' . $id)
 			->run();
 	}
@@ -349,9 +326,8 @@ final class Character extends Model
 	 */
 	public function calendarEventAttendees(int $id)
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Calendar\Event\Attendee::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/calendar/' . $id . '/attendees')
 			->run();
 	}
@@ -362,9 +338,8 @@ final class Character extends Model
 	 */
 	public function clones()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Copy::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/clones')
 			->run();
 	}
@@ -375,8 +350,7 @@ final class Character extends Model
 	 */
 	public function implants()
 	{
-		return (new Request)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
+		return $this->_request
 			->setEndpoint($this->base_uri . '/implants')
 			->run();
 	}
@@ -387,9 +361,8 @@ final class Character extends Model
 	 */
 	public function contacts()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(\Eve\Models\Shared\Contact::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/contacts')
 			->run();
 	}
@@ -400,9 +373,8 @@ final class Character extends Model
 	 */
 	public function contactLabels()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Contacts\Label::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/contacts/labels')
 			->run();
 	}
@@ -413,9 +385,8 @@ final class Character extends Model
 	 */
 	public function contracts()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(\Eve\Models\Shared\Contract::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/contracts')
 			->run();
 	}
@@ -429,9 +400,8 @@ final class Character extends Model
 	 */
 	public function contractBids(int $id)
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(\Eve\Models\Shared\Contracts\Bid::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/contracts/' . $id . '/bids')
 			->run();
 	}
@@ -445,9 +415,8 @@ final class Character extends Model
 	 */
 	public function contractItems(int $id)
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(\Eve\Models\Shared\Contracts\Item::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/contracts/' . $id . '/items')
 			->run();
 	}
@@ -458,9 +427,8 @@ final class Character extends Model
 	 */
 	public function factionWarfareStats()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(FactionWarfare\Stat::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/fw/stats')
 			->run();
 	}
@@ -471,9 +439,8 @@ final class Character extends Model
 	 */
 	public function fittings()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Fitting::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/fittings')
 			->run();
 	}
@@ -484,9 +451,8 @@ final class Character extends Model
 	 */
 	public function fleet()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Fleet::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/fleet')
 			->run();
 	}
@@ -497,9 +463,8 @@ final class Character extends Model
 	 */
 	public function industryJobs()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Industry\Job::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/industry/jobs')
 			->run();
 	}
@@ -510,9 +475,8 @@ final class Character extends Model
 	 */
 	public function mining()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Mining::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/mining')
 			->run();
 	}
@@ -523,9 +487,8 @@ final class Character extends Model
 	 */
 	public function killMailRecent()
 	{
-		return (new Request)
+		return $this->_request
 			->setmodel(\Eve\Models\Shared\KillMails\KillMail::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/killmails/recent')
 			->run();
 	}
@@ -536,9 +499,8 @@ final class Character extends Model
 	 */
 	public function location()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Location::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/location')
 			->run();
 	}
@@ -549,9 +511,8 @@ final class Character extends Model
 	 */
 	public function online()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Online::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/online')
 			->run();
 	}
@@ -562,9 +523,8 @@ final class Character extends Model
 	 */
 	public function ship()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Ship::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/ship')
 			->run();
 	}
@@ -575,9 +535,8 @@ final class Character extends Model
 	 */
 	public function loyaltyPoints()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Loyalty::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/loyalty/points')
 			->run();
 	}
@@ -590,9 +549,8 @@ final class Character extends Model
 	 */
 	public function messages()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Mail::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/mail')
 			->run();
 	}
@@ -608,9 +566,8 @@ final class Character extends Model
 	 */
 	public function message(int $id)
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Mail\Mail::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/mail/' . $id)
 			->run();
 	}
@@ -621,9 +578,8 @@ final class Character extends Model
 	 */
 	public function mailLabels()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Mail\Label::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/mail/labels')
 			->run();
 	}
@@ -634,9 +590,8 @@ final class Character extends Model
 	 */
 	public function mailLists()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Mail\Lists::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/mail/lists')
 			->run();
 	}
@@ -647,9 +602,8 @@ final class Character extends Model
 	 */
 	public function orders()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Order::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/orders')
 			->run();
 	}
@@ -660,9 +614,8 @@ final class Character extends Model
 	 */
 	public function orderHistory()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Orders\History::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/orders/history')
 			->run();
 	}
@@ -673,9 +626,8 @@ final class Character extends Model
 	 */
 	public function opportunities()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Opportunity::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/opportunities')
 			->run();
 	}
@@ -686,9 +638,8 @@ final class Character extends Model
 	 */
 	public function planets()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Planet::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/planets')
 			->run();
 	}
@@ -702,9 +653,8 @@ final class Character extends Model
 	 */
 	public function planet(int $id)
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Planets\Planet::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/planets/' . $id)
 			->run();
 	}
@@ -719,9 +669,8 @@ final class Character extends Model
 	 */
 	public function search(string $search, array $categories)
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Search::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/search?search=' . $search . '&categories=' . implode(',', $categories))
 			->run();
 	}
@@ -732,9 +681,8 @@ final class Character extends Model
 	 */
 	public function attributes()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Attribute::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/attributes')
 			->run();
 	}
@@ -745,9 +693,8 @@ final class Character extends Model
 	 */
 	public function skillQueue()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(SkillQueue::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/skillqueue')
 			->run();
 	}
@@ -760,8 +707,7 @@ final class Character extends Model
 	 */
 	public function wallet()
 	{
-		return (new Request)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
+		return $this->_request
 			->setEndpoint($this->base_uri . '/wallet')
 			->setExpectJson(false)
 			->run();
@@ -773,9 +719,8 @@ final class Character extends Model
 	 */
 	public function walletJournal()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(\Eve\Models\Shared\Wallet\Journal::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/wallet/journal')
 			->run();
 	}
@@ -786,9 +731,8 @@ final class Character extends Model
 	 */
 	public function walletTransactions()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Wallet\Transaction::class)
-			->setHeader('authorization', 'Authorization: Bearer ' . $this->access_token)
 			->setEndpoint($this->base_uri . '/wallet/transactions')
 			->run();
 	}

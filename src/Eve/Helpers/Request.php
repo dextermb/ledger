@@ -9,10 +9,11 @@ use Eve\Exceptions\JsonException;
 use Eve\Exceptions\ModelException;
 use Eve\Exceptions\NoAccessTokenException;
 use Eve\Exceptions\NoRefreshTokenException;
+use Eve\Models\Character\Character;
 
 final class Request
 {
-	const base_uri        = 'https://esi.tech.ccp.is/latest';
+	const BASE_URI        = 'https://esi.tech.ccp.is/latest';
 	const BASE_OPTIONS    = '?datasorce=tranquility&language=en-us';
 	const MODEL_NAMESPACE = 'Eve\Models\\';
 
@@ -32,6 +33,9 @@ final class Request
 
 	/** @var int $id */
 	protected $id;
+
+	/** @var Character $character */
+	protected $character;
 
 	/** @var string $model */
 	protected $model;
@@ -54,27 +58,32 @@ final class Request
 	/** @var array $response */
 	protected $response;
 
+	/** @var bool $use_session */
+	protected $use_session;
+
 	/** @var bool $expect_json */
 	protected $expect_json = true;
 
 	/**
+	 * @param bool $use_session
 	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 */
-	public function __construct()
+	public function __construct(bool $use_session = true)
 	{
-		$eve     = Eve::init();
-		$session = Session::init();
+		$this->use_session = $use_session;
 
-		if (isset($session->access_token)) {
-			$eve->refreshIfExpired();
+		if ($use_session) {
+			$session = Session::init();
 
-			$this->headers['authorization'] = 'Authorization: Bearer ' . $session->access_token;
+			if (isset($session->access_token)) {
+				Eve::init()->refreshIfExpired();
+
+				$this->headers['authorization'] = 'Authorization: Bearer ' . $session->access_token;
+			}
 		}
 	}
 
 	/**
-	 * Set ID
-	 *
 	 * @param int $id
 	 * @return $this
 	 */
@@ -86,8 +95,6 @@ final class Request
 	}
 
 	/**
-	 * Set model
-	 *
 	 * @param string $model
 	 * @return $this
 	 */
@@ -99,8 +106,6 @@ final class Request
 	}
 
 	/**
-	 * Set endpoint
-	 *
 	 * @param string $endpoint
 	 * @return $this
 	 */
@@ -116,8 +121,6 @@ final class Request
 	}
 
 	/**
-	 * Set many cURL options
-	 *
 	 * @param array $curl_opts
 	 * @return $this
 	 */
@@ -129,8 +132,6 @@ final class Request
 	}
 
 	/**
-	 * Set a cURL option
-	 *
 	 * @param int   $key
 	 * @param mixed $value
 	 * @return $this
@@ -143,8 +144,6 @@ final class Request
 	}
 
 	/**
-	 * Set many request headers
-	 *
 	 * @param array $headers
 	 * @param bool  $force
 	 * @return $this
@@ -159,8 +158,6 @@ final class Request
 	}
 
 	/**
-	 * Set a request header
-	 *
 	 * @param string $key
 	 * @param string $header
 	 * @return $this
@@ -173,8 +170,6 @@ final class Request
 	}
 
 	/**
-	 * Set post data
-	 *
 	 * @param array $data
 	 * @return $this
 	 */
@@ -186,8 +181,26 @@ final class Request
 	}
 
 	/**
-	 * Set if an endpoint should return json or not
-	 *
+	 * @param Character $character
+	 * @throws ApiException|JsonException|ModelException|NoRefreshTokenException|NoAccessTokenException
+	 * @return $this
+	 */
+	public function setCharacter(Character $character = null)
+	{
+		$this->character = $character;
+
+		if (!is_null($character)) {
+			if (isset($character->access_token)) {
+				Eve::init()->refreshIfExpired($character);
+
+				$this->headers['authorization'] = 'Authorization: Bearer ' . $character->access_token;
+			}
+		}
+
+		return $this;
+	}
+
+	/**
 	 * @param bool $expect_json
 	 * @return $this
 	 */
@@ -199,8 +212,6 @@ final class Request
 	}
 
 	/**
-	 * Send an API request to ESI
-	 *
 	 * @param bool $post
 	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return Model|Model[]|array
@@ -211,7 +222,7 @@ final class Request
 
 		$curl_opts = $this->curl_opts + self::DEFAULT_CURLOPTS;
 
-		$url = self::base_uri . $this->endpoint;
+		$url = self::BASE_URI . $this->endpoint;
 		$url .= strpos($this->endpoint, '?') !== false
 			? str_replace('?', '&', self::BASE_OPTIONS)
 			: self::BASE_OPTIONS;
@@ -263,8 +274,6 @@ final class Request
 	}
 
 	/**
-	 * Convert response to a model
-	 *
 	 * @param array  $data
 	 * @param string $class
 	 * @return Model|Model[]|array
@@ -332,14 +341,16 @@ final class Request
 			}
 		}
 
-		$model->setAttributes($data);
+		$model
+			->setAttributes($data)
+			->setCharacter($this->character);
 
 		$attributes = array_keys(get_object_vars($model));
 
 		foreach ($attributes as $attribute) {
 			if (isset($data[ $attribute ])) {
 				$model->{$attribute} = $data[ $attribute ];
-			};
+			}
 		}
 
 		return $model;

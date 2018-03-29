@@ -1,7 +1,16 @@
 <?php
 namespace Eve\Abstracts;
 
+use Eve\Helpers\Request;
 use Eve\Abstracts\Model\Map;
+
+use Eve\Models\Character\Character;
+
+use Eve\Exceptions\ApiException;
+use Eve\Exceptions\JsonException;
+use Eve\Exceptions\ModelException;
+use Eve\Exceptions\NoAccessTokenException;
+use Eve\Exceptions\NoRefreshTokenException;
 
 class Model implements \Eve\Interfaces\Model, \ArrayAccess
 {
@@ -14,12 +23,21 @@ class Model implements \Eve\Interfaces\Model, \ArrayAccess
 	/** @var array $_attributes */
 	private $_attributes = [];
 
+	/** @var Character $_character */
+	protected $_character;
+
+	/** @var Request $_request */
+	protected $_request;
+
 	/**
 	 * @param int $id
+	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 */
 	public function __construct(int $id = null)
 	{
-		$this->id = $id;
+		$this->id       = $id;
+		$this->_request = (new Request)
+			->setCharacter($this instanceof Character ? $this : $this->_character);
 	}
 
 	/**
@@ -66,10 +84,24 @@ class Model implements \Eve\Interfaces\Model, \ArrayAccess
 
 	/**
 	 * @param array $attributes
+	 * @return $this
 	 */
 	public function setAttributes(array $attributes)
 	{
 		$this->_attributes = $attributes;
+
+		return $this;
+	}
+
+	/**
+	 * @param Character $character
+	 * @return $this
+	 */
+	public function setCharacter(Character $character = null)
+	{
+		$this->_character = $character;
+
+		return $this;
 	}
 
 	/**

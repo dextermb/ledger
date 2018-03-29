@@ -2,14 +2,15 @@
 namespace Eve\Traits;
 
 use Eve\Abstracts\Model;
+use Eve\Helpers\Request;
+
+use Eve\Models\Character\Character;
 
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
 use Eve\Exceptions\ModelException;
 use Eve\Exceptions\NoAccessTokenException;
 use Eve\Exceptions\NoRefreshTokenException;
-
-use Eve\Collections\Alliances\Alliance;
 
 trait GetAlliance
 {
@@ -26,6 +27,10 @@ trait GetAlliance
 			return null;
 		}
 
-		return (new Alliance)->getItem($this->alliance_id);
+		return (new Request)
+			->setModel(\Eve\Models\Alliances\Alliance::class)
+			->setEndpoint('/alliances/' . $this->alliance_id)
+			->setCharacter($this instanceof Character ? $this : $this->_character)
+			->run();
 	}
 }

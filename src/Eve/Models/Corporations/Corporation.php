@@ -2,8 +2,6 @@
 namespace Eve\Models\Corporations;
 
 use Eve\Helpers\ModelGroup;
-use Eve\Helpers\Request;
-
 use Eve\Abstracts\Model;
 
 use Eve\Traits\GetAlliance;
@@ -88,7 +86,7 @@ final class Corporation extends Model
 	 */
 	public function allianceHistory()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(AllianceHistory::class)
 			->setEndpoint($this->base_uri . '/alliancehistory')
 			->run();
@@ -100,7 +98,7 @@ final class Corporation extends Model
 	 */
 	public function blueprints()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(\Eve\Models\Shared\Blueprint::class)
 			->setEndpoint($this->base_uri . '/blueprints')
 			->run();
@@ -112,7 +110,7 @@ final class Corporation extends Model
 	 */
 	public function containerLogs()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Containers\Log::class)
 			->setEndpoint($this->base_uri . '/containers/logs')
 			->run();
@@ -124,7 +122,7 @@ final class Corporation extends Model
 	 */
 	public function divisions()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Division::class)
 			->setEndpoint($this->base_uri . '/divisions')
 			->run();
@@ -136,7 +134,7 @@ final class Corporation extends Model
 	 */
 	public function facilities()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(\Eve\Models\Shared\Industry\Facility::class)
 			->setEndpoint($this->base_uri . '/facilities')
 			->run();
@@ -148,7 +146,7 @@ final class Corporation extends Model
 	 */
 	public function icons()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(\Eve\Models\Shared\Icon::class)
 			->setEndpoint($this->base_uri . '/icons')
 			->run();
@@ -160,7 +158,7 @@ final class Corporation extends Model
 	 */
 	public function medals()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Medal::class)
 			->setEndpoint($this->base_uri . '/medals')
 			->run();
@@ -172,7 +170,7 @@ final class Corporation extends Model
 	 */
 	public function medalsIssued()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Medals\Issued::class)
 			->setEndpoint($this->base_uri . '/medals/issued')
 			->run();
@@ -185,7 +183,7 @@ final class Corporation extends Model
 	 */
 	public function members(bool $transform = true)
 	{
-		$members = (new Request)
+		$members = $this->_request
 			->setEndpoint($this->base_uri . '/members')
 			->run();
 
@@ -202,7 +200,7 @@ final class Corporation extends Model
 	 */
 	public function membersLimit()
 	{
-		return (new Request)
+		return $this->_request
 			->setEndpoint($this->base_uri . '/members/limit')
 			->setExpectJson(false)
 			->run();
@@ -214,7 +212,7 @@ final class Corporation extends Model
 	 */
 	public function memberTitles()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Members\Title::class)
 			->setEndpoint($this->base_uri . '/members/titles')
 			->run();
@@ -226,7 +224,7 @@ final class Corporation extends Model
 	 */
 	public function memberTracking()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(MemberTracking::class)
 			->setEndpoint($this->base_uri . '/membertracking')
 			->run();
@@ -238,7 +236,7 @@ final class Corporation extends Model
 	 */
 	public function outposts()
 	{
-		return (new Request)
+		return $this->_request
 			->setEndpoint($this->base_uri . '/outposts')
 			->run();
 	}
@@ -252,7 +250,7 @@ final class Corporation extends Model
 	 */
 	public function outpost(int $id)
 	{
-		return (new Request)
+		return $this->_request
 			->setEndpoint($this->base_uri . '/outposts/' . $id)
 			->run();
 	}
@@ -263,7 +261,7 @@ final class Corporation extends Model
 	 */
 	public function roles()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Role::class)
 			->setEndpoint($this->base_uri . '/roles')
 			->run();
@@ -275,7 +273,7 @@ final class Corporation extends Model
 	 */
 	public function rolesHistory()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Roles\History::class)
 			->setEndpoint($this->base_uri . '/roles/history')
 			->run();
@@ -287,7 +285,7 @@ final class Corporation extends Model
 	 */
 	public function shareholders()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Shareholder::class)
 			->setEndpoint($this->base_uri . '/shareholders')
 			->run();
@@ -299,7 +297,7 @@ final class Corporation extends Model
 	 */
 	public function standings()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(\Eve\Models\Shared\Standing::class)
 			->setEndpoint($this->base_uri . '/standings')
 			->run();
@@ -311,7 +309,7 @@ final class Corporation extends Model
 	 */
 	public function starbases()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Starbase::class)
 			->setEndpoint($this->base_uri . '/starbases')
 			->run();
@@ -326,7 +324,7 @@ final class Corporation extends Model
 	 */
 	public function starbase(int $id)
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Starbases\Starbase::class)
 			->setEndpoint($this->base_uri . '/starbases/' . $id)
 			->run();
@@ -338,7 +336,7 @@ final class Corporation extends Model
 	 */
 	public function structures()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Structure::class)
 			->setEndpoint($this->base_uri . '/structures')
 			->run();
@@ -350,7 +348,7 @@ final class Corporation extends Model
 	 */
 	public function titles()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Title::class)
 			->setEndpoint($this->base_uri . '/titles')
 			->run();
@@ -362,7 +360,7 @@ final class Corporation extends Model
 	 */
 	public function assets()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(\Eve\Models\Shared\Asset::class)
 			->setEndpoint($this->base_uri . '/assets')
 			->run();
@@ -374,7 +372,7 @@ final class Corporation extends Model
 	 */
 	public function bookmarks()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(\Eve\Models\Shared\Bookmark::class)
 			->setEndpoint($this->base_uri . '/bookmarks')
 			->run();
@@ -386,7 +384,7 @@ final class Corporation extends Model
 	 */
 	public function bookmarkFolders()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(\Eve\Models\Shared\Bookmarks\Folder::class)
 			->setEndpoint($this->base_uri . '/bookmarks/folders')
 			->run();
@@ -398,7 +396,7 @@ final class Corporation extends Model
 	 */
 	public function contacts()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(\Eve\Models\Shared\Contact::class)
 			->setEndpoint($this->base_uri . '/contacts')
 			->run();
@@ -410,7 +408,7 @@ final class Corporation extends Model
 	 */
 	public function contracts()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(\Eve\Models\Shared\Contract::class)
 			->setEndpoint($this->base_uri . '/contracts')
 			->run();
@@ -425,7 +423,7 @@ final class Corporation extends Model
 	 */
 	public function contractBids(int $id)
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(\Eve\Models\Shared\Contracts\Bid::class)
 			->setEndpoint($this->base_uri . '/contracts/' . $id . '/bids')
 			->run();
@@ -440,7 +438,7 @@ final class Corporation extends Model
 	 */
 	public function contractItems(int $id)
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(\Eve\Models\Shared\Contracts\Item::class)
 			->setEndpoint($this->base_uri . '/contracts/' . $id . '/items')
 			->run();
@@ -452,7 +450,7 @@ final class Corporation extends Model
 	 */
 	public function factionWarfareStats()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(FactionWarfare\Stat::class)
 			->setEndpoint($this->base_uri . '/fw/stats')
 			->run();
@@ -464,7 +462,7 @@ final class Corporation extends Model
 	 */
 	public function industryJobs()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(\Eve\Models\Shared\Industry\Job::class)
 			->setEndpoint($this->base_uri . '/industry/jobs')
 			->run();
@@ -476,7 +474,7 @@ final class Corporation extends Model
 	 */
 	public function miningExtractions()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Mining\Extraction::class)
 			->setEndpoint($this->base_uri . '/mining/extractions')
 			->run();
@@ -488,7 +486,7 @@ final class Corporation extends Model
 	 */
 	public function miningObservers()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Mining\Observer::class)
 			->setEndpoint($this->base_uri . '/mining/observers')
 			->run();
@@ -503,7 +501,7 @@ final class Corporation extends Model
 	 */
 	public function miningObserver(int $id)
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Mining\Observers\Observer::class)
 			->setEndpoint($this->base_uri . '/mining/observers/' . $id)
 			->run();
@@ -515,7 +513,7 @@ final class Corporation extends Model
 	 */
 	public function killMailRecent()
 	{
-		return (new Request)
+		return $this->_request
 			->setmodel(\Eve\Models\Shared\KillMails\KillMail::class)
 			->setEndpoint($this->base_uri . '/killmails/recent')
 			->run();
@@ -527,7 +525,7 @@ final class Corporation extends Model
 	 */
 	public function orders()
 	{
-		return (new Request)
+		return $this->_request
 			->setmodel(Order::class)
 			->setEndpoint($this->base_uri . '/orders')
 			->run();
@@ -539,7 +537,7 @@ final class Corporation extends Model
 	 */
 	public function orderHistory()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Orders\History::class)
 			->setEndpoint($this->base_uri . '/orders/history')
 			->run();
@@ -551,7 +549,7 @@ final class Corporation extends Model
 	 */
 	public function customsOffices()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(CustomsOffices::class)
 			->setEndpoint($this->base_uri . '/customs_offices')
 			->run();
@@ -563,7 +561,7 @@ final class Corporation extends Model
 	 */
 	public function wallets()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(Wallet::class)
 			->setEndpoint($this->base_uri . '/wallets')
 			->run();
@@ -578,7 +576,7 @@ final class Corporation extends Model
 	 */
 	public function walletJournal(int $id)
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(\Eve\Models\Shared\Wallet\Journal::class)
 			->setEndpoint($this->base_uri . '/wallets/' . $id . '/journal')
 			->run();
@@ -593,7 +591,7 @@ final class Corporation extends Model
 	 */
 	public function walletTransactions(int $id)
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(\Eve\Models\Shared\Wallet\Transaction::class)
 			->setEndpoint($this->base_uri . '/wallets/' . $id . '/transactions')
 			->run();
@@ -605,7 +603,7 @@ final class Corporation extends Model
 	 */
 	public function offers()
 	{
-		return (new Request)
+		return $this->_request
 			->setModel(\Eve\Models\Loyalty\Stores\Corporation\Offer::class)
 			->setEndpoint('/loyalty/stores/' . $this->id . '/offers')
 			->run();

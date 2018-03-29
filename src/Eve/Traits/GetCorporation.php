@@ -1,15 +1,16 @@
 <?php
 namespace Eve\Traits;
 
+use Eve\Helpers\Request;
 use Eve\Abstracts\Model;
+
+use Eve\Models\Character\Character;
 
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
 use Eve\Exceptions\ModelException;
 use Eve\Exceptions\NoAccessTokenException;
 use Eve\Exceptions\NoRefreshTokenException;
-
-use Eve\Collections\Corporations\Corporation;
 
 trait GetCorporation
 {
@@ -26,6 +27,10 @@ trait GetCorporation
 			return null;
 		}
 
-		return (new Corporation)->getItem($this->corporation_id);
+		return (new Request)
+			->setModel(\Eve\Models\Corporations\Corporation::class)
+			->setEndpoint('/corporations/' . $this->corporation_id)
+			->setCharacter($this instanceof Character ? $this : $this->_character)
+			->run();
 	}
 }

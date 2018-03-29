@@ -5,6 +5,7 @@ use Eve\Helpers\DB;
 use Eve\Helpers\Session;
 
 use Eve\Collections\Character\Character;
+use Eve\Models\Character\Character as Char;
 
 use Eve\Exceptions\ApiException;
 use Eve\Exceptions\JsonException;
@@ -192,10 +193,11 @@ final class Eve
 
 	/**
 	 * @param string $code
+	 * @param Char   $character
 	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return bool
 	 */
-	public function verify(string $code)
+	public function verify(string $code, Char &$character = null)
 	{
 		if (!$code) {
 			return false;
@@ -209,53 +211,80 @@ final class Eve
 			])
 		);
 
-		$session                = Session::init();
-		$session->access_token  = $json['access_token'];
-		$session->refresh_token = $json['refresh_token'];
-		$session->valid_until   = time() + self::EXPIRE_TIME;
+		$valid_until = time() + self::EXPIRE_TIME;
 
-		$this->self();
+		if (!is_null($character)) {
+			$character->setAuth($json['access_token'], $json['refresh_token'], $valid_until);
+		} else {
+			$session                = Session::init();
+			$session->access_token  = $json['access_token'];
+			$session->refresh_token = $json['refresh_token'];
+			$session->valid_until   = $valid_until;
+		}
+
+		$this->self($character);
 
 		return true;
 	}
 
 	/**
+	 * @param Char $character
 	 * @throws ApiException|JsonException|ModelException|NoRefreshTokenException|NoAccessTokenException
 	 * @return array
 	 */
-	public function refresh()
+	public function refresh(Char &$character = null)
 	{
-		if (!isset(Session::init()->refresh_token)) {
-			throw new NoRefreshTokenException;
+		if (!is_null($character)) {
+			if (!isset($character->refresh_token)) {
+				throw new NoRefreshTokenException;
+			}
+		} else {
+			if (!isset(Session::init()->refresh_token)) {
+				throw new NoRefreshTokenException;
+			}
 		}
 
 		$json = $this->request(
 			'https://login.eveonline.com/oauth/token',
 			http_build_query([
 				'grant_type'    => 'refresh_token',
-				'refresh_token' => Session::init()->refresh_token,
+				'refresh_token' => !is_null($character) ? $character->refresh_token : Session::init()->refresh_token,
 			]),
 			[ 'content_type' => 'Content-Type: application/x-www-form-urlencoded' ]
 		);
 
-		$session                = Session::init();
-		$session->access_token  = $json['access_token'];
-		$session->refresh_token = $json['refresh_token'];
-		$session->valid_until   = time() + self::EXPIRE_TIME;
+		$valid_until = time() + self::EXPIRE_TIME;
 
-		$this->self();
 
-		return [ $session->access_token, $session->refresh_token, $session->valid_until ];
+		if (!is_null($character)) {
+			$character->setAuth($json['access_token'], $json['refresh_token'], $valid_until);
+		} else {
+			$session                = Session::init();
+			$session->access_token  = $json['access_token'];
+			$session->refresh_token = $json['refresh_token'];
+			$session->valid_until   = $valid_until;
+		}
+
+		$this->self($character);
+
+		return [ $json['access_token'], $json['refresh_token'], $valid_until ];
 	}
 
 	/**
+	 * @param Char $character
 	 * @throws ApiException|JsonException|ModelException|NoAccessTokenException|NoRefreshTokenException
 	 * @return \Eve\Models\Character\Character
 	 */
-	public function self()
+	public function self(Char &$character = null)
 	{
-		if (!isset(Session::init()->access_token)) {
-			throw new NoAccessTokenException;
+		if (!is_null($character)) {
+			if (!isset($character->access_token)) {
+				throw new NoAccessTokenException;
+			}
+		} else {
+			if (!isset(Session::init()->access_token)) {
+				throw new NoAccessTokenException;
+			}
 		}
 
 		$json = $this->request(
@@ -265,13 +294,19 @@ final class Eve
 			false
 		);
 
-		$session = Session::init();
+		/** @var Char $tmp */
+		$tmp = (new Character)->getItem($json['CharacterID']);
 
-		/** @var \Eve\Models\Character\Character $session -> self */
-		$session->self = (new Character)->getItem($json['CharacterID']);
-		$session->self->setAuth($session->access_token, $session->refresh_token, $session->valid_until);
+		if (!is_null($character)) {
+			$tmp->setAuth($character->access_token, $character->refresh_token, $character->valid_until);
+		} else {
+			$session = Session::init();
+			$tmp->setAuth($session->access_token, $session->refresh_token, $session->valid_until);
 
-		return $session->self;
+			$session->self = $tmp;
+		}
+
+		return $tmp;
 	}
 
 	/**
@@ -284,13 +319,14 @@ final class Eve
 	}
 
 	/**
+	 * @param Char $character
 	 * @throws ApiException|JsonException|ModelException|NoRefreshTokenException|NoAccessTokenException
 	 * @return array|bool
 	 */
-	public function refreshIfExpired()
+	public function refreshIfExpired(Char &$character = null)
 	{
-		if ($this->hasExpired()) {
-			return $this->refresh();
+		if ($this->hasExpired(!is_null($character) ? $character->valid_until : null)) {
+			return $this->refresh($character);
 		}
 
 		return false;
