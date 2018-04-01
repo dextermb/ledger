@@ -166,10 +166,10 @@ final class Eve
 			self::$instance = new self;
 		}
 
-		self::$instance->client_id       = env('CLIENT_ID');
-		self::$instance->client_secret   = env('CLIENT_SECRET');
-		self::$instance->redirect_uri    = env('REDIRECT_URI');
-		self::$instance->required_scopes = env('REQUIRED_SCOPES', self::SCOPES);
+		self::$instance->client_id       = env('EVE_CLIENT_ID');
+		self::$instance->client_secret   = env('EVE_CLIENT_SECRET');
+		self::$instance->redirect_uri    = env('EVE_REDIRECT_URI');
+		self::$instance->required_scopes = env('EVE_REQUIRED_SCOPES', self::SCOPES);
 
 		if (is_string(self::$instance->required_scopes)) {
 			$scopes = self::$instance->required_scopes;
