@@ -1,7 +1,6 @@
 <?php
 namespace Eve;
 
-use Eve\Helpers\DB;
 use Eve\Helpers\Session;
 
 use Eve\Collections\Character\Character;
@@ -24,7 +23,7 @@ final class Eve
 	/** @var string $redirect_uri */
 	private $redirect_uri;
 
-	/** @var array $required_scopes */
+	/** @var array|string $required_scopes */
 	private $required_scopes;
 
 	const EXPIRE_TIME = 1200;
@@ -171,6 +170,12 @@ final class Eve
 		self::$instance->client_secret   = env('CLIENT_SECRET');
 		self::$instance->redirect_uri    = env('REDIRECT_URI');
 		self::$instance->required_scopes = env('REQUIRED_SCOPES', self::SCOPES);
+
+		if (is_string(self::$instance->required_scopes)) {
+			$scopes = self::$instance->required_scopes;
+
+			self::$instance->required_scopes = explode(',', $scopes);
+		}
 
 		self::$instance->unique_id = uniqid();
 
